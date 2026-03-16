@@ -7,12 +7,12 @@
 
 ---
 
-![Inicio](assets/inicial.png)
+![Inicio](Inicial.png)
 Analogia: `main()`
 
 ---
 
-![Intermediario](assets/Intermediario.png)
+![Intermediario](Intermediario.png)
 (?)
 
 ---
@@ -21,12 +21,12 @@ Analogia: `main()`
 fim do fluxo
 
 ---
-![Exclusivo](./assets/exclusivo.png)
+![Exclusivo](exclusivo.png)
 
 Analogia: `if`
 
 ---
-![Paralelo](assets/paralelo.png)
+![Paralelo](paralelo.png)
 
 Faz todos os caminhos paralelamente
 Analogia: `switch` (sem break)
@@ -54,14 +54,14 @@ Atividade a ser executada
 
 # Swimlane
 ---
-![Swimlane](assets/SwimLaneExemplo.png)
+![Swimlane](SwimLaneExemplo.png)
 Basicamente, separa as ações por responsabilidades
 
 ---
 
 # Integração com serviço de terceiros
 
-![Swimlane Com Mensageria](assets/SwimLaneComMsg.png)
+![Swimlane Com Mensageria](SwimLaneComMsg.png)
 As linhas tracejadas significam que tem uma conexão entre o nosso sistema e um sistema de terceiro, nesse exemplo, a linha tracejada significa que a função `Verificar disponibilidade` comunica com o ERP.
 
 E a linha mais fraca ali em cima na ordem de compra, só serve pra dizer que recebe algum documento.

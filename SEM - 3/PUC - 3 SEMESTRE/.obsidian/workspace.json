@@ -11,6 +11,30 @@
             "id": "e93d2199462f2712",
             "type": "leaf",
             "state": {
+              "type": "image",
+              "state": {
+                "file": "assets/Analise e Projeto de sistemas/Icons/EnviarMensagem.png"
+              },
+              "icon": "lucide-image",
+              "title": "EnviarMensagem"
+            }
+          },
+          {
+            "id": "e225568844c56bb7",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "assets/Analise e Projeto de sistemas/Icons/exclusivo.png"
+              },
+              "icon": "lucide-image",
+              "title": "exclusivo"
+            }
+          },
+          {
+            "id": "2600266d352b0801",
+            "type": "leaf",
+            "state": {
               "type": "markdown",
               "state": {
                 "file": "Analise e projeto de sistemas.md",
@@ -21,7 +45,8 @@
               "title": "Analise e projeto de sistemas"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -183,19 +208,23 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "e93d2199462f2712",
+  "active": "2600266d352b0801",
   "lastOpenFiles": [
-    "assets/Looping.png",
+    "assets/Analise e Projeto de sistemas/Icons/Tarefa.png",
+    "assets/Analise e Projeto de sistemas/exemplos/SwimLaneExemplo.png",
+    "assets/Analise e Projeto de sistemas/exemplos/SwimLaneComMsg.png",
+    "assets/Analise e Projeto de sistemas/exemplos/Looping.png",
     "Analise e projeto de sistemas.md",
-    "assets/ReceberMensagem.png",
-    "assets/EnviarMensagem.png",
-    "assets/Subprocesso.png",
-    "assets/Tarefa.png",
-    "assets/Final.png",
-    "Pasted image 20260316162852.png",
-    "assets/Intermediario.png",
-    "assets/Inicial.png",
-    "Pasted image 20260316162413.png",
+    "assets/Analise e Projeto de sistemas/exemplos",
+    "assets/Analise e Projeto de sistemas/Icons/EnviarMensagem.png",
+    "assets/Analise e Projeto de sistemas/Icons/exclusivo.png",
+    "assets/Analise e Projeto de sistemas/Icons/Final.png",
+    "assets/Analise e Projeto de sistemas/Icons/Inicial.png",
+    "assets/Analise e Projeto de sistemas/Icons/Intermediario.png",
+    "assets/Analise e Projeto de sistemas/Icons/paralelo.png",
+    "assets/Analise e Projeto de sistemas/Icons/Subprocesso.png",
+    "assets/Analise e Projeto de sistemas/Icons",
+    "assets/Analise e Projeto de sistemas",
     "assets/SwimLaneExemplo.md",
     "assets"
   ]
