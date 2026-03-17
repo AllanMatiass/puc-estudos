@@ -3,11 +3,11 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const IMCApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class IMCApp extends StatelessWidget {
+  const IMCApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,21 +16,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.teal),
       ),
-      home: const MyHomePage(title: 'IMC'),
+      home: const IMCHomePage(title: 'IMC'),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class IMCHomePage extends StatefulWidget {
+  const IMCHomePage({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<IMCHomePage> createState() => _IMCHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _IMCHomePageState extends State<IMCHomePage> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
 
