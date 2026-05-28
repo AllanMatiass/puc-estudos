@@ -149,5 +149,15 @@ Esses fatores são geralmente avaliados em uma escala de 0 a 5, onde cada fator 
 ### Fatos:
 - O modelo de avaliação ISO 33000 organiza a avaliação em duas dimensões: processo e capacidade do processo.
 - A norma ISO 15504 é também conhecida como SPICE e se concentra na melhoria e determinação da capacidade dos processos de software.
-- ISO 33000 E ISO 12207: 
-- métrica indireta
+
+### FlashCards
+
+> [!question]- Standalone
+> Software que vai rodar localmente no PC do cliente final
+
+> [!question]- Integração Contínua
+> É a prática de testar e integrar o código frequentemente ao dia
+
+> [!question]- Processos de desenvolvimento do ISO 12207
+> Análise, projeto, codificação, integração, testes e instalação
+
