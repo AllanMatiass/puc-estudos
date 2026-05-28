@@ -144,6 +144,36 @@ Esses fatores são geralmente avaliados em uma escala de 0 a 5, onde cada fator 
 
 ![[metricas indiretas.png]]
 
+![[Pasted image 20260528193414.png]]
+
+![[Pasted image 20260528193453.png]]
+
+![[Pasted image 20260528193616.png]]
+
+![[Pasted image 20260528193828.png]]
+
+![[Pasted image 20260528194049.png]]
+
+![[Pasted image 20260528194413.png|626]]
+
+
+![[Pasted image 20260528194556.png]]
+
+![[Pasted image 20260528195122.png]]
+
+![[Pasted image 20260528195258.png]]
+
+![[Pasted image 20260528195509.png]]
+
+![[Pasted image 20260528200325.png]]
+
+![[Pasted image 20260528200638.png]]
+
+![[Pasted image 20260528200849.png]]
+
+![[Pasted image 20260528200918.png]]
+
+
 
 ---
 ### Fatos:
@@ -161,3 +191,28 @@ Esses fatores são geralmente avaliados em uma escala de 0 a 5, onde cada fator 
 > [!question]- Processos de desenvolvimento do ISO 12207
 > Análise, projeto, codificação, integração, testes e instalação
 
+> [!question]- Ciclo de vida do ISO 12207
+> Processos fundamentais, de apoio, organizacionais e de adaptação
+> [!question]- Significado de KISS
+> Keep it simple stupid
+> Todo projeto deve ser simples, mas não simplista, para facilitar a compreensão e a manutenção.
+
+> [!question]- Significado de KISS
+> Keep it simple stupid
+> Todo projeto deve ser simples, mas não simplista, para facilitar a compreensão e a manutenção.
+
+> [!question]- Diferença entre Time Box e Não Time Box
+> Time box = tempo fixo
+> Não time box = tempo adequado para a quantidade de trabalho planejada
+
+> [!question]- Feature Creep
+> Adicionar funcionalidades desnecessárias sem validar se realmente precisa daquela feature
+
+> [!question]- Ao analisar a terminologia de processo da ISO 12207, qual é a hierarquia correta que agrupa e desmembra os processos desde o nível mais alto até a menor unidade executável?
+> Tipos de processos -> Processos -> Atividades -> tarefas
+
+> [!question]- Quais são as três grandes atividades essenciais envolvidas no BDD que são convertidas nas cláusulas de um cenário?
+> Dado (contexto), quando (ação/evento/trigger), então (resultado/validação)
+
+> [!question]- A norma ISO/IEC 15504 (SPICE) introduziu o uso de PRM. O que significa PRM e qual a sua função na norma?
+> Process Reference Model (Modelo de Referência de Processos) - base referencial que descreve a arquitetura e os componentes esperados de cada processo para a avaliação.
