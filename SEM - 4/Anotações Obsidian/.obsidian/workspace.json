@@ -1,31 +1,19 @@
 {
   "main": {
-    "id": "edc8fc98ce6ac22a",
+    "id": "f3c0f75f06a47cb8",
     "type": "split",
     "children": [
       {
-        "id": "b7d51bb338032084",
+        "id": "36e071c3f2a0a2db",
         "type": "tabs",
         "children": [
           {
-            "id": "2600266d352b0801",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "assets/Pasted image 20260528195114.png"
-              },
-              "icon": "lucide-image",
-              "title": "Pasted image 20260528195114"
-            }
-          },
-          {
-            "id": "b6f9b9cfb7bded63",
+            "id": "ffd1d3e41060d535",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Cálculo/Pré Cálculo/Aula 1 - Propriedades da potenciação.md",
+                "file": "Aula 1 - Propriedades da potenciação.md",
                 "mode": "source",
                 "source": false
               },
@@ -33,22 +21,21 @@
               "title": "Aula 1 - Propriedades da potenciação"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
   },
   "left": {
-    "id": "a6808a8b7ccb8107",
+    "id": "80a6e3be9923dbdb",
     "type": "split",
     "children": [
       {
-        "id": "b841ece550a599b4",
+        "id": "9fa1a650229eb166",
         "type": "tabs",
         "children": [
           {
-            "id": "890c0a4a9447a713",
+            "id": "619e5c860fee73f6",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -61,7 +48,7 @@
             }
           },
           {
-            "id": "63d565ad8265593e",
+            "id": "f84623b1735320e6",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -78,7 +65,7 @@
             }
           },
           {
-            "id": "8e161100fea92871",
+            "id": "91ddd3a58228472a",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -94,20 +81,20 @@
     "width": 300
   },
   "right": {
-    "id": "b626b11879dccb64",
+    "id": "f4ed01c8229b37ef",
     "type": "split",
     "children": [
       {
-        "id": "5ee8b343ec0bc251",
+        "id": "19f5262ab25fbc74",
         "type": "tabs",
         "children": [
           {
-            "id": "39a4deb357b20acb",
+            "id": "3f7f62ecde23f1c7",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "assets/Analise e Projeto de sistemas/Analise e projeto de sistemas.md",
+                "file": "Aula 1 - Propriedades da potenciação.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -117,25 +104,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Links inversos para Analise e projeto de sistemas"
+              "title": "Links inversos para Aula 1 - Propriedades da potenciação"
             }
           },
           {
-            "id": "a0444d0e6d4fa8cc",
+            "id": "176799975be594db",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "assets/Analise e Projeto de sistemas/Analise e projeto de sistemas.md",
+                "file": "Aula 1 - Propriedades da potenciação.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Links de saída para Analise e projeto de sistemas"
+              "title": "Links de saída para Aula 1 - Propriedades da potenciação"
             }
           },
           {
-            "id": "b99323f2a6f3707c",
+            "id": "cb16a5be962b19c7",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -150,7 +137,7 @@
             }
           },
           {
-            "id": "f14b6d42c3dcd651",
+            "id": "fdb3aea2d80e0574",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -164,18 +151,18 @@
             }
           },
           {
-            "id": "58ecf37bf81978e4",
+            "id": "d9d63f9bcfec5b64",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "assets/Analise e Projeto de sistemas/Analise e projeto de sistemas.md",
+                "file": "Aula 1 - Propriedades da potenciação.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Sumário de Analise e projeto de sistemas"
+              "title": "Sumário de Aula 1 - Propriedades da potenciação"
             }
           }
         ]
@@ -196,34 +183,14 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "b6f9b9cfb7bded63",
+  "active": "ffd1d3e41060d535",
   "lastOpenFiles": [
-    "AWS/Banco de dados RDS Aurora.md",
-    "assets/Engenharia de produtos/Pasted image 20260528200918.png",
-    "assets/Engenharia de produtos/Pasted image 20260528200849.png",
-    "assets/Engenharia de produtos/Pasted image 20260528200638.png",
-    "assets/Engenharia de produtos",
-    "assets/Engenharia de produtos/Pasted image 20260528200325.png",
-    "assets/Engenharia de produtos/Pasted image 20260528195509.png",
-    "assets/Engenharia de produtos/Pasted image 20260528195258.png",
-    "assets/Engenharia de produtos/Pasted image 20260528195122.png",
-    "assets/exemplos/Engenharia de processos/Pasted image 20260528195114.png",
-    "assets/calculo/Pasted image 20260728131455.png",
-    "Cálculo/Pré Cálculo/Aula 1 - Propriedades da potenciação.md",
-    "assets/calculo",
+    "assets/Cálculo/Potenciação.png",
+    "Aula 1 - Propriedades da potenciação.md",
+    "assets/Cálculo",
+    "Sem título",
+    "assets",
     "Cálculo/Pré Cálculo",
-    "Cálculo",
-    "Sem título.md",
-    "Sem título 1.md",
-    "AWS",
-    "Matemática discreta",
-    "Engenharia de Processos/Overview.md",
-    "assets/exemplos/Engenharia de processos/Pasted image 20260528194556.png",
-    "assets/exemplos/Engenharia de processos",
-    "Analise e Projeto de sistemas/Analise e projeto de sistemas.md",
-    "Engenharia de Processos",
-    "assets/exemplos",
-    "assets/Icons",
-    "assets/SwimLaneExemplo.md"
+    "Cálculo"
   ]
 }
