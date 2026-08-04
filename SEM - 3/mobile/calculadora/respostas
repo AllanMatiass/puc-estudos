@@ -1,0 +1,56 @@
+A função da CalculadoraApp é definir quem vai ser a aplicação principal (root).
+Através do Widget MaterialApp
+
+Por que, para fazer alterações na tela, o widget não pode ser stateless, precisa ser stateful para manipular os estados da tela.
+
+2.3 - O estado está no State (_TelaPrincipalState) é gerenciado pelo CalculatorController, que indiretamente manipula o display.
+2.4 - O papel do initState() define o cnotroller e coloca um texto inicial (0) no display, ele executa 1 vez, apenas na inicialização do app;
+2.5 - após pressionar o botão, o controller "pressiona" a tecla pressionada e o setState((){}) força o rebuild pra atualizar o display.
+
+3.6 - A estrutura do layout é:
+	Column -> organiza verticalmente
+	Expanded -> Divide espaço
+	GridView -> grade de botões
+	
+	A separação é: Parte de cima: display, parte de baixo: botões
+
+3.7 - O uso do container serve para alinhar, dar padding e conter o texto, ele controla a aparencia e a posição do display.
+
+3.8 - Flex 1: ocupa 1 parte, flex 2: ocupa 2 partes
+
+3.9 - grid 4x4 é configurado para receber crossAxisCount: 4, isso quer dizer que será 4 colunas por 4 linhas.
+
+4.10 - Botões ElevatedButton são criados com um map e envolvidos em um padding
+
+4.11 - Primeiro, pega a Tecla num Mapa de teclas do tipo Map<String, Key>, se a key existir, o controller vai pressionar aquela
+ tecla e fazer a função que foi atribuida. E faz o rebuild da UI.
+
+4.12 - propriedade da função style que define um tamanho minimo: ElevatedButton.styleFrom(minimumSize: Size(60,60))
+
+
+
+5.13 - Tipos de tecla: Action, digit e Operator.
+	- Digit: serve pra indicar que é um dígito
+	- Operator: serve para indicar que é um operador matemático
+	- Action: serve para realizar alguma ação usando alguma CalcAction
+
+5.14 - É responsável por armazenar e modificar o texto.
+
+5.15 - É responsável por interpretar string, validar com regex e calcular o resultado
+
+5.16 - O controller orquestra tudo: Recebe teclas, atualiza display e chama a engine
+
+5.17 - Clear limpa o display, backspace apaga o ultimo digito e enter calcula
+
+
+
+6.18 - Através de um Map, onde a chave é a stirng a ser interpretada e o valor, o valor a receber. Exemplo:
+	keys['C'] = Key(label: 'C', type: KeyType.action, action: CalcAction.clear)
+
+6.19 - Por que o label é o texto a ser exibido, enquanto o value é o texto a ser interpretado, por exemplo "x" representa "vezes" em alguns contextos da linguagem matematica natural.
+	Mas a engine interpreta "vezes" como "*", então, o que será interpretado é "*".
+
+7.20 - Tratamento de erro em dois lugares diferentes:
+	No engine: verifica se é divisão por zero e verifica se a expressão é válida, se algum dos dois forem inválidos, lança erro.
+	No controller: Trata o erro colocando "Erro" no display.
+

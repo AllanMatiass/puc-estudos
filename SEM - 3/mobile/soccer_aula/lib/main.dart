@@ -1,6 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:soccer_aula/soccer_team_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -39,17 +43,28 @@ class SoccerTeamList extends StatefulWidget {
 }
 
 class _SoccerTeamListState extends State<SoccerTeamList> {
-  final List<SoccerTeam> _teams = [];
+  final SoccerTeamService _sts = SoccerTeamService();
+
+  late List<Map<String, dynamic>> _teams = [];
+
+  @override
+  void initState(){
+    super.initState();
+    setState(() async {
+      _teams = await _sts.getSoccerTeams();
+    });
+  }
 
   Future<void> _navigateToAddTeam() async {
+
     final SoccerTeam? newTeam = await Navigator.push<SoccerTeam>(
       context,
       MaterialPageRoute(builder: (context) => const SoccerTeamAdd()),
     );
 
     if (newTeam != null) {
-      setState(() {
-        _teams.add(newTeam);
+      setState(() async {
+        await _sts.addNewSoccerTeam(name: newTeam.name, foundationYear: newTeam.foundationYear);
       });
     }
   }
@@ -129,6 +144,11 @@ class _SoccerTeamListState extends State<SoccerTeamList> {
       ),
     );
   }
+}
+
+extension on Map<String, dynamic> {
+  get name => String;
+  get foundationYear => int;
 }
 
 class SoccerTeamAdd extends StatefulWidget {

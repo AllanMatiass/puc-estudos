@@ -8,17 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "ffd1d3e41060d535",
+            "id": "2b9ff03734c4e90b",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Cálculo/Limites/Paulo Pereira/Limites/Noção intuitiva de limites.md",
+                "file": "Cálculo/Aulas/Aula 1 - Apresentação e Função de Primeiro Grau.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Noção intuitiva de limites"
+              "title": "Aula 1 - Apresentação e Função de Primeiro Grau"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "f4ed01c8229b37ef",
@@ -183,12 +184,14 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "ffd1d3e41060d535",
+  "active": "2b9ff03734c4e90b",
   "lastOpenFiles": [
+    "Cálculo/Limites/Paulo Pereira/Limites/Noção intuitiva de limites.md",
+    "Cálculo/Aulas/Aula 1 - Apresentação e Função de Primeiro Grau.md",
+    "Cálculo/Aulas",
     "Pasted image 20260728173204.png",
     "Cálculo/Limites/Paulo Pereira/Limites",
     "Cálculo/Pré Cálculo/Sem título.md",
-    "Cálculo/Limites/Paulo Pereira/Limites/Noção intuitiva de limites.md",
     "Cálculo/Limites/Paulo Pereira",
     "Cálculo/Limites",
     "Cálculo/Pré Cálculo/Aula 3 - Álgebra.md",
