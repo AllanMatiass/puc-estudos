@@ -1,1 +1,3 @@
 .obsidian
+mongo/atlas-credentials.env
+mongo/**/node_modules
