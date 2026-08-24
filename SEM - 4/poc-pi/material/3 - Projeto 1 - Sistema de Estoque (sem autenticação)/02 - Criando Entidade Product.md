@@ -7,7 +7,7 @@ Baseado no Item 2 (Escopo), podemos criar uma entidade Product em `domains/Produ
 public class Product {  
   
     @Id  
-    private UUID id;  
+    private final UUID id;  
   
   
     private String name;  
@@ -30,6 +30,7 @@ public class Product {
 # Desafio
 Seguindo os princípios de POO e de Injeção de Dependências que a gente falou em `Spring Essencial`, você consegue:
 - Fazer o required args constructor?
+- Fazer o no args constructor?
 - Fazer os Getters e Setters?
 
-Tente fazer o desafio antes de avançar.
+Tente fazer o desafio antes de avançar. Lembra de "Explorar" as classes, como UUID, BigDecimal, etc
