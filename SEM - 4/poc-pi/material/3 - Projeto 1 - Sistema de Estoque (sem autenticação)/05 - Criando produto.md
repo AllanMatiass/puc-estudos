@@ -69,14 +69,11 @@ public record CreateProductDTO(
 ```
 
 
-
-
-
 # Desafio:
 
 Você consegue implementar esse método no service usando sua lógica e o conhecimento adquirido em `4.1 - Spring Data`?:
 ```java
 public Product create(CreateProductDTO dto){  
-// TODO: Fazer a lógica de validação para criar um produto.
+// TODO: Fazer a lógica para criar um produto.
 }
 ```
