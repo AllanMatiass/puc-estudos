@@ -21,7 +21,7 @@ public class Product {
     private int purchased;  
   
   
-    @CreatedDate // Pega o instante que isso foi criado.  
+    @CreatedDate // Pega o instante em que a instância foi criada automaticamente. 
     private LocalDateTime createdAt;  
     
 }
@@ -32,3 +32,4 @@ Seguindo os princípios de POO e de Injeção de Dependências que a gente falou
 - Fazer o required args constructor?
 - Fazer os Getters e Setters?
 
+Tente fazer o desafio antes de avançar.
