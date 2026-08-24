@@ -18,8 +18,7 @@ Cada produto deverá possuir:
 - `id`
 - `name`
 - `description`
-- `totalStock` 
-- `purchased`
+- `quantity`
 - `createdAt`
 
 Exemplo:
@@ -29,8 +28,7 @@ Exemplo:
   "name": "Teclado Mecânico",
   "description": "Teclado mecânico ABNT2",
   "price": 299.90,
-  "totalStock": 10,
-  "purchased": 4
+  "quantity": 10
 }
 ```
 
@@ -106,7 +104,7 @@ Exemplo:
 
 ```json
 {
-  "totalStock": 10
+  "quantity": 10
 }
 ```
 
@@ -216,32 +214,7 @@ Responsável pelo acesso ao banco.
 
 ---
 
-# 6. Tecnologias
-
-### Obrigatórias
-
-- Java 21+
-- Spring Boot
-- Spring Web
-- Spring Data JPA
-- Bean Validation
-- Banco de dados relacional
-- Maven
-
-### Sugestão
-
-```
-Java
-Spring Boot
-Spring Web
-Spring Data JPA
-PostgreSQL
-Maven
-```
-
----
-
-# 7. Annotations que devem aparecer
+# 6. Annotations que devem aparecer
 
 A ideia é usar o projeto para praticar as annotations apresentadas.
 
@@ -275,34 +248,23 @@ public ProductService(ProductRepository repository) {
 
 ---
 
-### JPA
+### Spring Data
 
 ```
-@Entity
+@Document
 @Id
-@GeneratedValue
 ```
 
 ---
 
-### Validação
-
-```
-@NotBlank
-@NotNull
-@Positive
-@PositiveOrZero
-```
-
----
-
-# 8. Desafio opcional
+# 7. Desafio opcional
 
 Depois que o CRUD estiver funcionando, adicionar uma estratégia de desconto.
 
 Criar:
 
 ```
+
 public interface DiscountStrategy {
 
     BigDecimal calculate(Product product);
@@ -344,7 +306,6 @@ Para manter o projeto pequeno, não será necessário implementar:
 - JWT;
 - cadastro de usuários;
 - frontend;
-- Docker;
 - Redis;
 - mensageria;
 - microsserviços;
