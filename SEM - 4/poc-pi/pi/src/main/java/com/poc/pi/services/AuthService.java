@@ -1,16 +1,16 @@
 package com.poc.pi.services;
 
-import com.poc.pi.domain.User;
+import com.poc.pi.domains.Product;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
     
-    public User createUser(UserRequest body){
+    public Product createUser(UserRequest body){
 
         //logica boa
 
-        return new User();
+        return new Product();
 
     }
 }
