@@ -1,24 +1,5 @@
 # Resolução dos desafios anteriores:
 
-o no args constructor é:
-```java
-// Esse é o no args constructor, que devemos colocar um ID aleatório, pois o id é um atributo final, ou seja, precisa ser inicializado obrigatóriamente.
-public Product() {  
-	// gera um id aleatório
-    this.id = UUID.randomUUID();  
-}
-```
-
-o required args constructor é:
-
-```java
-// Esse é o required args constructor, pois apenas o id é final.
-public Product(UUID id){  
-    this.id = id;  
-}
-```
-
-
 
 *método utilitário usado*: 
 ```java
@@ -90,6 +71,35 @@ Os getters e setters ficam assim:
     }
 ```
 
+o required args constructor é:
+
+```java
+// Esse é o required args constructor, pois apenas o id é final.
+public Product(UUID id){  
+    this.id = id;  
+}
+```
+
+O all args constructor é:
+```java
+public Product(
+        UUID id,
+        String name,
+        String description,
+        BigDecimal price,
+        int quantity,
+        LocalDateTime createdAt
+) {
+    this.id = id;
+
+    setName(name);
+    setDescription(description);
+    setPrice(price);
+    setQuantity(quantity);
+
+    this.createdAt = createdAt;
+}
+```
 
 No final, a entidade fica assim: 
 ```java
@@ -106,9 +116,7 @@ public class Product {
     // Por que BigDecimal? É mais preciso que os tipos primitivos como Float/Double por exemplo  
     private BigDecimal price;  
   
-    private int totalStock;  
-  
-    private int purchased;  
+    private int quantity;  
   
     @CreatedDate  
     private LocalDateTime createdAt;  
@@ -145,36 +153,37 @@ public class Product {
 //        }  
         this.price = price;  
     }  
-    public int getTotalStock() {  
-        return totalStock;  
+    public int getQuantity() {  
+        return this.quantity;  
     }  
-    public void setTotalStock(int totalStock) {  
-        if (totalStock < 0) {  
+    public void setQuantity(int quantity) {  
+        if (quantity < 0) {  
             throw new IllegalArgumentException("Total stock cannot be negative");  
         }  
-        this.totalStock = totalStock;  
-    }  
-    public int getPurchased() {  
-        return purchased;  
-    }  
-    public void setPurchased(int purchased) {  
-        if (purchased < 0) {  
-            throw new IllegalArgumentException("Purchased cannot be negative");  
-        }  
-        // Lança esse erro, pois não é possível vender a mais que o estoque.  
-        if (purchased > totalStock) {  
-            throw new IllegalArgumentException("Purchased cannot be greater than total stock");  
-        }        this.purchased = purchased;  
+        this.quantity = quantity;  
     }  
     public LocalDateTime getCreatedAt() {  
         return createdAt;  
     }  
-    // Construtor vazio Obrigatório  
-    public Product() {  
-        this.id = UUID.randomUUID();  
-    }  
     public Product(UUID id){  
         this.id = id;  
+    }  
+    public Product(  
+            UUID id,  
+            String name,  
+            String description,  
+            BigDecimal price,  
+            int quantity,  
+            LocalDateTime createdAt  
+    ) {  
+        this.id = id;  
+  
+        setName(name);  
+        setDescription(description);  
+        setPrice(price);  
+        setQuantity(quantity);  
+  
+        this.createdAt = createdAt;  
     }  
     private void validateText(String text, String fieldName){  
         if (text == null || text.isBlank()) {  

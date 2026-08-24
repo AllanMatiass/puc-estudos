@@ -16,10 +16,7 @@ public class Product {
     // Por que BigDecimal? É mais preciso que os tipos primitivos como Float/Double por exemplo  
     private BigDecimal price;  
   
-    private int totalStock;  
-  
-    private int purchased;  
-  
+    private int quantity;
   
     @CreatedDate // Pega o instante em que a instância foi criada automaticamente. 
     private LocalDateTime createdAt;  
@@ -29,8 +26,8 @@ public class Product {
 
 # Desafio
 Seguindo os princípios de POO e de Injeção de Dependências que a gente falou em `Spring Essencial`, você consegue:
-- Fazer o required args constructor?
-- Fazer o no args constructor?
 - Fazer os Getters e Setters?
+- Fazer o required args constructor?
+- Fazer o all args constructor?
 
 Tente fazer o desafio antes de avançar. Lembra de "Explorar" as classes, como UUID, BigDecimal, etc

@@ -80,7 +80,7 @@ Caso o produto não exista, deve retornar `404 Not Found`.
 
 O sistema deve permitir alterar os dados de um produto.
 
-```
+```http
 PUT /products/{id}
 ```
 
@@ -104,22 +104,22 @@ PATCH /products/{id}/stock/entry
 
 Exemplo:
 
-```
+```json
 {
-  "quantity": 10
+  "totalStock": 10
 }
 ```
 
 Se o produto possuía:
 
-```
+```json
 Estoque: 5
 Entrada: 10
 ```
 
 deve passar para:
 
-```
+```json
 Estoque: 15
 ```
 

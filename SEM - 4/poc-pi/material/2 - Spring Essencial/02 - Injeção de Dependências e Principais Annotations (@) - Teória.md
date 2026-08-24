@@ -155,10 +155,11 @@ Repository
 Database
 ```
 
-No **Spring Data**, muitas vezes você nem precisa escrever a implementação:
+No **Spring Data**, muitas vezes você nem precisa escrever a implementação, apenas indicar a entidade e o tipo do ID:
 
 ```java
 public interface UserRepository
+		// ou extends MongoRepository<User, UUID>
         extends JpaRepository<User, UUID> {
 }
 ```
