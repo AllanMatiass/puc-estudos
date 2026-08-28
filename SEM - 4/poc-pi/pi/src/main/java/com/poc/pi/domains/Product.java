@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Product {
 
     @Id
-    private final UUID id;
+    private UUID id;
 
     private String name;
 
@@ -87,21 +87,15 @@ public class Product {
     }
 
     public Product(
-            UUID id,
             String name,
             String description,
             BigDecimal price,
-            int quantity,
-            LocalDateTime createdAt
+            int quantity
     ) {
-        this.id = id;
-
         setName(name);
         setDescription(description);
         setPrice(price);
         setQuantity(quantity);
-
-        this.createdAt = createdAt;
     }
 
     private void validateText(String text, String fieldName){
