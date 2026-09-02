@@ -1,0 +1,24 @@
+{
+  "name": "a04-frequencia",
+  "version": "1.0.0",
+  "description": "Módulo de controle de frequência com MongoDB",
+  "main": "scripts/main.js",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "queries": "node scripts/queries/index.js",
+    "start": "node scripts/main.js"
+  },
+  "keywords": [
+    "mongodb",
+    "frequenciaDb",
+    "nosql",
+    "puc"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "mongodb": "^7.6.0"
+  }
+}
