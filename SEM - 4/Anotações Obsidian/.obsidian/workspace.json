@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Cálculo/Autonomas/Função afim.md",
+                "file": "Roteiro Apresentação/VTEX.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Função afim"
+              "title": "VTEX"
             }
           }
         ]
@@ -185,20 +185,23 @@
       "bases:Criar nova base": false
     }
   },
-  "active": "619e5c860fee73f6",
+  "active": "37a4c440873f12a0",
   "lastOpenFiles": [
+    "assets/Cálculo/WhatsApp Image 2026-08-08 at 14.40.17 1.jpeg",
+    "Cálculo/Limites/PUC/Limites Infinitos & NO INFINITO.md",
+    "assets/Cálculo/Pasted image 20260902223426.png",
+    "assets/Cálculo/Pasted image 20260902222615.png",
+    "Cálculo/Limites/PUC/Limites indeterteminados.md",
+    "assets/Cálculo/Pasted image 20260902220958.png",
+    "assets/Cálculo/Pasted image 20260902220115.png",
+    "assets/Cálculo/Pasted image 20260902215320.png",
+    "assets/Cálculo/Pasted image 20260902213244.png",
+    "assets/Cálculo/Pasted image 20260902215102.png",
+    "Cálculo/Autonomas/Função afim.md",
+    "Cálculo/Limites/PUC",
     "assets/Cálculo/WhatsApp Image 2026-08-08 at 17.18.27 1.jpeg",
     "assets/Cálculo/WhatsApp Image 2026-08-08 at 17.18.27.jpeg",
     "assets/Cálculo/WhatsApp Image 2026-08-08 at 17.15.18.jpeg",
-    "assets/Cálculo/WhatsApp Image 2026-08-08 at 15.39.57.jpeg",
-    "assets/Cálculo/WhatsApp Image 2026-08-08 at 14.40.17 2.jpeg",
-    "assets/Cálculo/WhatsApp Image 2026-08-08 at 14.40.17 1.jpeg",
-    "assets/Cálculo/WhatsApp Image 2026-08-08 at 14.40.17.jpeg",
-    "assets/Cálculo/WhatsApp Image 2026-08-08 at 13.40.27.jpeg",
-    "assets/Cálculo/Potenciação.png",
-    "assets/Cálculo/Pasted image 20260728153941.png",
-    "assets/Cálculo/Pasted image 20260728163400.png",
-    "Cálculo/Autonomas/Função afim.md",
     "assets/Cálculo/Aula 1 - Função do 1º grau - aplicações (1).pptx",
     "Cálculo/Aulas/Aula 1 - Apresentação e Função de Primeiro Grau.md",
     "Cálculo/Autonomas",
@@ -212,7 +215,6 @@
     "Cálculo/Pré Cálculo/Aula 1 - Propriedades da potenciação.md",
     "assets/Cálculo",
     "assets",
-    "Cálculo/Pré Cálculo",
-    "Cálculo"
+    "Cálculo/Pré Cálculo"
   ]
 }
