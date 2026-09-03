@@ -11,7 +11,7 @@ public class Tracinhos implements Cloneable
         // preenche this.texto com underlines (_).
 
         for (int i = 0; i < qtd; i++){
-            texto[i] = '_';
+            this.texto[i] = '_';
         }
 
     }

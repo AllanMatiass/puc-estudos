@@ -31,8 +31,8 @@ public class Main
             catch (Exception erro)
             {}
 
-            while (tracinhos.isAindaComTracinhos() &&
-                  !controladorDeErros.isAtingidoMaximoDeErros())
+            while (tracinhos != null && tracinhos.isAindaComTracinhos() &&
+                  controladorDeErros != null && !controladorDeErros.isAtingidoMaximoDeErros())
             {
                 System.out.println ("Palavra...: "+tracinhos);
                 System.out.println ("Digitadas.: "+controladorDeLetrasJaDigitadas);

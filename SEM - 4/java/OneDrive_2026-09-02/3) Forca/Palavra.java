@@ -38,25 +38,17 @@ public class Palavra implements Comparable<Palavra>
 
         int length = texto.length();
 
-        int idx = -1;
-        int aparicao = 0;
-        System.out.println(idx + "antes do for");
-
+        int aparicao = -1;
         for (int j = 0; j < length; j++){
-            if (letra == texto.toCharArray()[j]){
-                idx = j;
-                aparicao++;
+            if (letra == texto.charAt(j)){
+                if (++aparicao == i) return j;
             }
-            System.out.println(idx + "no for");
         }
 
 
         // lan�ar excecao caso nao encontre em this.texto
         // a I�zima apari��o da letra fornecida.
-        if (aparicao < i) throw new Exception("Essa letra nao aparece mais de " + aparicao + " vezes");
-        if (idx == -1) throw new Exception("tem essa letra nao");
-
-        return idx;
+        throw new Exception("Essa letra nao aparece mais de " + aparicao + " vezes");
     }
 
     public int getTamanho ()
