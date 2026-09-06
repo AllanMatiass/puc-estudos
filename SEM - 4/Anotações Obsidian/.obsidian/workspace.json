@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Roteiro Apresentação/VTEX.md",
+                "file": "Cálculo/Derivadas/Fórmula Base.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "VTEX"
+              "title": "Fórmula Base"
             }
           }
         ]
@@ -187,8 +187,11 @@
   },
   "active": "37a4c440873f12a0",
   "lastOpenFiles": [
-    "assets/Cálculo/WhatsApp Image 2026-08-08 at 14.40.17 1.jpeg",
     "Cálculo/Limites/PUC/Limites Infinitos & NO INFINITO.md",
+    "Cálculo/Derivadas/Fórmula Base.md",
+    "Cálculo/Derivadas",
+    "Roteiro Apresentação/VTEX.md",
+    "assets/Cálculo/WhatsApp Image 2026-08-08 at 14.40.17 1.jpeg",
     "assets/Cálculo/Pasted image 20260902223426.png",
     "assets/Cálculo/Pasted image 20260902222615.png",
     "Cálculo/Limites/PUC/Limites indeterteminados.md",
@@ -201,7 +204,6 @@
     "Cálculo/Limites/PUC",
     "assets/Cálculo/WhatsApp Image 2026-08-08 at 17.18.27 1.jpeg",
     "assets/Cálculo/WhatsApp Image 2026-08-08 at 17.18.27.jpeg",
-    "assets/Cálculo/WhatsApp Image 2026-08-08 at 17.15.18.jpeg",
     "assets/Cálculo/Aula 1 - Função do 1º grau - aplicações (1).pptx",
     "Cálculo/Aulas/Aula 1 - Apresentação e Função de Primeiro Grau.md",
     "Cálculo/Autonomas",
@@ -214,7 +216,6 @@
     "Cálculo/Pré Cálculo/Aula 2 - Potenciação e Radiação.md",
     "Cálculo/Pré Cálculo/Aula 1 - Propriedades da potenciação.md",
     "assets/Cálculo",
-    "assets",
-    "Cálculo/Pré Cálculo"
+    "assets"
   ]
 }
