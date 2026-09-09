@@ -6,7 +6,9 @@
   "scripts": {
     "setup": "node scripts/setup.js",
     "queries": "node scripts/queries/index.js",
-    "start": "node scripts/main.js"
+    "start": "node scripts/main.js",
+    "mongosh:setup": "mongosh scripts/setup.mongo.js",
+    "mongosh:queries": "mongosh queries/index.js"
   },
   "keywords": [
     "mongodb",

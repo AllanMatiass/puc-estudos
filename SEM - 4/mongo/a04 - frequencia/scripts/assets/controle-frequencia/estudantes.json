@@ -158,5 +158,349 @@
         "situacao": "matriculado"
       }
     ]
+  },
+  {
+    "RA": "3001",
+    "nome": "Lucas Gabriel Santos",
+    "curso": "Ciência da Computação",
+    "periodo": 2,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "11010-T",
+        "disciplinaNome": "Algoritmos e Estruturas de Dados 1",
+        "turmaCodigo": "0201",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3002",
+    "nome": "Beatriz Helena Costa",
+    "curso": "Sistemas de Informação",
+    "periodo": 6,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "14110-P",
+        "disciplinaNome": "Engenharia de Requisitos e Modelagem",
+        "turmaCodigo": "0601",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      },
+      {
+        "disciplinaCodigo": "14250-P",
+        "disciplinaNome": "Desenvolvimento Web Full Stack",
+        "turmaCodigo": "0602",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3003",
+    "nome": "Thiago Albuquerque Silva",
+    "curso": "Engenharia da Computação",
+    "periodo": 5,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "12180-T",
+        "disciplinaNome": "Arquitetura e Organização de Computadores",
+        "turmaCodigo": "0501",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3004",
+    "nome": "Mariana Vasconcelos Dias",
+    "curso": "Análise e Desenvolvimento de Sistemas",
+    "periodo": 3,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "11450-P",
+        "disciplinaNome": "Programação Orientada a Objetos",
+        "turmaCodigo": "0301",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3005",
+    "nome": "Rodrigo Mendonça Prado",
+    "curso": "Inteligência Artificial",
+    "periodo": 7,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "15230-T",
+        "disciplinaNome": "Inteligência Artificial e Aprendizado de Máquina",
+        "turmaCodigo": "0701",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3006",
+    "nome": "Juliana Peixoto Tavares",
+    "curso": "Engenharia de Software",
+    "periodo": 1,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "10010-T",
+        "disciplinaNome": "Introdução à Computação",
+        "turmaCodigo": "0101",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3007",
+    "nome": "Gabriel Guimarães Ramos",
+    "curso": "Ciência da Computação",
+    "periodo": 8,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "16440-P",
+        "disciplinaNome": "Computação em Nuvem e DevOps",
+        "turmaCodigo": "0801",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      },
+      {
+        "disciplinaCodigo": "15310-T",
+        "disciplinaNome": "Segurança da Informação",
+        "turmaCodigo": "0802",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "concluido"
+      }
+    ]
+  },
+  {
+    "RA": "3008",
+    "nome": "Larissa Nogueira Castro",
+    "curso": "Sistemas de Informação",
+    "periodo": 2,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "11010-T",
+        "disciplinaNome": "Algoritmos e Estruturas de Dados 1",
+        "turmaCodigo": "0202",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3009",
+    "nome": "Matheus Vinicius Farias",
+    "curso": "Engenharia da Computação",
+    "periodo": 6,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "13520-P",
+        "disciplinaNome": "Redes de Computadores",
+        "turmaCodigo": "0601",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3010",
+    "nome": "Carolina Azevedo Pires",
+    "curso": "Análise e Desenvolvimento de Sistemas",
+    "periodo": 1,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "10020-P",
+        "disciplinaNome": "Lógica de Programação",
+        "turmaCodigo": "0101",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3011",
+    "nome": "Vinicius Antunes Barbosa",
+    "curso": "Inteligência Artificial",
+    "periodo": 3,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "13120-T",
+        "disciplinaNome": "Teoria dos Grafos e Complexidade",
+        "turmaCodigo": "0301",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "trancado"
+      }
+    ]
+  },
+  {
+    "RA": "3012",
+    "nome": "Fernanda Duarte Toledo",
+    "curso": "Engenharia de Software",
+    "periodo": 8,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "16440-P",
+        "disciplinaNome": "Computação em Nuvem e DevOps",
+        "turmaCodigo": "0801",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3013",
+    "nome": "Rafael Silveira Campos",
+    "curso": "Ciência da Computação",
+    "periodo": 5,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "12200-T",
+        "disciplinaNome": "Sistemas Operacionais",
+        "turmaCodigo": "0501",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      },
+      {
+        "disciplinaCodigo": "12490-P",
+        "disciplinaNome": "Estudos de Bancos de Dados 2 - Prática",
+        "turmaCodigo": "0101",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3014",
+    "nome": "Camila Vitoria Monteiro",
+    "curso": "Sistemas de Informação",
+    "periodo": 4,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "12490-P",
+        "disciplinaNome": "Estudos de Bancos de Dados 2 - Prática",
+        "turmaCodigo": "0102",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3015",
+    "nome": "Gustavo Henrique Xavier",
+    "curso": "Engenharia da Computação",
+    "periodo": 7,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "15310-T",
+        "disciplinaNome": "Segurança da Informação",
+        "turmaCodigo": "0701",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3016",
+    "nome": "Leticia Meireles Barros",
+    "curso": "Análise e Desenvolvimento de Sistemas",
+    "periodo": 5,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "14250-P",
+        "disciplinaNome": "Desenvolvimento Web Full Stack",
+        "turmaCodigo": "0501",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3017",
+    "nome": "Andre Luis Rezende",
+    "curso": "Inteligência Artificial",
+    "periodo": 2,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "11010-T",
+        "disciplinaNome": "Algoritmos e Estruturas de Dados 1",
+        "turmaCodigo": "0201",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3018",
+    "nome": "Patricia Borges Marinho",
+    "curso": "Engenharia de Software",
+    "periodo": 3,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "12340-T",
+        "disciplinaNome": "Interação Humano-Computador",
+        "turmaCodigo": "0301",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3019",
+    "nome": "Leonardo Fagundes Maia",
+    "curso": "Ciência da Computação",
+    "periodo": 7,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "15230-T",
+        "disciplinaNome": "Inteligência Artificial e Aprendizado de Máquina",
+        "turmaCodigo": "0701",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
+  },
+  {
+    "RA": "3020",
+    "nome": "Julia Carvalho Fontes",
+    "curso": "Sistemas de Informação",
+    "periodo": 1,
+    "matriculas": [
+      {
+        "disciplinaCodigo": "10020-P",
+        "disciplinaNome": "Lógica de Programação",
+        "turmaCodigo": "0102",
+        "anoCalendario": 2026,
+        "semestreCalendario": 2,
+        "situacao": "matriculado"
+      }
+    ]
   }
 ]

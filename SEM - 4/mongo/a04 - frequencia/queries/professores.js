@@ -11,10 +11,10 @@ db = db.getSiblingDB(dbName);
 print("=============================================================================");
 print(" DOMÍNIO: PROFESSORES (DOCENTES)");
 print(" Banco de Dados: " + db.getName() + " | Coleção: professores");
-print("=============================================================================\n");
+print("=============================================================================");
 
 // 1. Listar todos os professores cadastrados
-print("--- [1] Listar todos os professores cadastrados ---");
+print("\n--- [1] Listar todos os professores cadastrados ---");
 printjson(db.professores.find({}).toArray());
 
 // 2. Buscar professor por Registro do Professor (RP)
