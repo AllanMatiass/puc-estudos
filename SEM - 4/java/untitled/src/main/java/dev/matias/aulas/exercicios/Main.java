@@ -10,8 +10,7 @@ public class Main
         System.out.println(Data.isBissexto((short)2000)); // true
         System.out.println(Data.isValida((byte)10,(byte)8,(short)2026)); // true
 
-        try
-        {
+        try        {
             Data niverMaligno = new Data ((byte)19,(byte)1,(short)1966);
             System.out.println(niverMaligno); // 19/01/1966
             Data afterParty = niverMaligno.getDiaSeguinte();
