@@ -47,7 +47,7 @@ public class Aluno implements Cloneable
 
     public Data getNascimento ()
     {
-        return this.nascimento;
+        return this.nascimento.clone();
     }
 
     public int getRa(){
