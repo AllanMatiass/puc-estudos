@@ -31,6 +31,6 @@ ordena por ordem de chegada
 # Escalonamento SJF - Shortest Job First
 Ordena os processos dos menores para os maiores processos
 
-# Escalonamento SRTF - Shortest Remaining Time First
+# Escalonamento SRTF - Shorteost Remaining Time First
 Bucha demais, precisa estudar.
 tem o preemptivo e o não preemptivo
