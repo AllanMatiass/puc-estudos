@@ -1,6 +1,6 @@
-package com;
+package com.Horario;
 
-import com.domain.Horario;
+import com.Horario.domain.Horario;
 
 public class Main {
     public static void main(String[] args) {
