@@ -10,13 +10,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 find_package(Threads REQUIRED)
 
 # Cria executáveis independentes para cada arquivo .c em src/ (ignorando arquivos vazios)
-file(GLOB SOURCES "src/*.c")
+file(GLOB_RECURSE SOURCES "src/*.c")
 foreach(SOURCE_FILE ${SOURCES})
     file(SIZE ${SOURCE_FILE} FILE_SIZE)
     if(FILE_SIZE GREATER 0)
         get_filename_component(TARGET_NAME ${SOURCE_FILE} NAME_WE)
         add_executable(${TARGET_NAME} ${SOURCE_FILE}
-                src/intro_pthreads.c)
+                src/intro_pthreads.c
+                src/trythis/trythis.c)
         target_link_libraries(${TARGET_NAME} PRIVATE Threads::Threads)
     endif()
 endforeach()
