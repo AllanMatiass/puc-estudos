@@ -1,22 +1,30 @@
 package com.Nubank;
 
 import com.Nubank.domain.Cliente;
+import com.Nubank.domain.Expressao;
+import com.Nubank.domain.Solicitacao;
 
 import java.util.PriorityQueue;
+import java.util.Stack;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
     public static void main(String[] args) {
-        PriorityQueue<Cliente> pqc = new PriorityQueue<>();
+        Solicitacao s = new Solicitacao();
+        String[] ops = {
+                "ADD 10", "ADD 20",
+                "URGENT 30", "ADD 40",
+                "URGENT 50"
+        };
 
-
-        for (int i = 0; i < 5; i++) {
-            Cliente c2 = new Cliente();
-            pqc.add(c2);
-            System.out.println(c2.nome);
-            System.out.println(c2.prioridade);
+        for (String op : ops) {
+            s.operate(op);
         }
 
-        Cliente c = pqc.poll();
-        System.out.printf("nome: %s\nprioridade: %d", c.nome, c.prioridade);
+        System.out.println("JOSEMOA");
+
+        while (!s.pq.isEmpty()) {
+            System.out.println(s.pq.poll());
+        }
     }
 }
