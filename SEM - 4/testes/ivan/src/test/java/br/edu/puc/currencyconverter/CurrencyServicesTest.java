@@ -178,7 +178,7 @@ public class CurrencyServicesTest {
     public void deveDemonstrarFalhaAoUsarJulhoDevidoIndiceZero() {
 
         System.out.println(
-                "Este teste demonstra uma anomalia conhecida " +
+                "\nAVISO: Este teste demonstra uma anomalia conhecida " +
                         "no tratamento do mês de julho: " + "CurrencyServicesTest.deveDemonstrarFalhaAoUsarJulhoDevidoIndiceZero()"
         );
         // Arrange
