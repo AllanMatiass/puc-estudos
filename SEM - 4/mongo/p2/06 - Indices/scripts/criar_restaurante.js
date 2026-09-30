@@ -1,7 +1,7 @@
 const falso = require('@ngneat/falso');
 const { MongoClient } = require('mongodb');
 
-const uri = 'mongodb+srv://alangiovanepaes_db_user:fkLtUHo5ur2CZhGi@restaurants.wrosyo5.mongodb.net/?appName=restaurants'; // Ajuste sua URI de conexão aqui se necessário
+const uri = ''; // Ajuste sua URI de conexão aqui se necessário
 
 const client = new MongoClient(uri);
 function getRandomItem(arr) {
