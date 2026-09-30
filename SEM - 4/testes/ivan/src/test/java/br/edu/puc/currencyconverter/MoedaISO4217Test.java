@@ -114,13 +114,21 @@ public class MoedaISO4217Test {
     }
 
     @Test
-    @DisplayName("Anomalia detectada: AUD possui código numérico 30 devido ao literal octal 036")
+    @DisplayName("ANOMALIA: AUD possui código numérico 30 devido ao literal octal 036")
     public void deveVerificarCodigoNumericoAudComportamentoAtual() {
+
         // Arrange
         MoedaISO4217 aud = MoedaISO4217.AUD;
 
         // Act
         int codigoNumerico = aud.getCodigoNumerico();
+
+        System.out.println(
+                "AVISO: Moeda AUD deveria possuir código numérico 36, " +
+                        "porém o literal '036' foi interpretado como octal, resultando em: "
+                        + codigoNumerico
+        );
+
 
         // Assert
         // Na especificação ISO 4217 o código do AUD é 036 (decimal 36).

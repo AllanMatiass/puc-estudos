@@ -174,23 +174,33 @@ public class CurrencyServicesTest {
     }
 
     @Test
-    @DisplayName("Anomalia detectada: Falha ao passar Calendar.JULY (6) devido à indexação base-0 de Calendar.MONTH")
-    public void deveDemonstrarFalhaAoUsarConstanteJulhoDevidoIndiceZero() {
+    @DisplayName("Deve detectar falha ao converter uma data de julho devido ao tratamento incorreto do índice do mês")
+    public void deveDemonstrarFalhaAoUsarJulhoDevidoIndiceZero() {
+
+        System.out.println(
+                "Este teste demonstra uma anomalia conhecida " +
+                        "no tratamento do mês de julho: " + "CurrencyServicesTest.deveDemonstrarFalhaAoUsarJulhoDevidoIndiceZero()"
+        );
         // Arrange
         String de = "BRL";
         String para = "USD";
+
         Calendar dataJulho = Calendar.getInstance();
         dataJulho.set(Calendar.YEAR, 2014);
-        dataJulho.set(Calendar.MONTH, Calendar.JULY); // Calendar.JULY é 6!
+        dataJulho.set(Calendar.MONTH, Calendar.JULY); // JULY = 6 (índice base-0)
         dataJulho.set(Calendar.DAY_OF_MONTH, 15);
+
         double quantia = 100.0;
 
         // Act & Assert
-        // Devido ao bug no código, a data é formatada como "15/06/2014" em vez de "15/07/2014".
-        // O mock procura "BRL->USD (15/06/2014)" que não existe, lançando exceção.
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            currencyServices.converter(de, para, dataJulho, quantia);
-        });
+        // Calendar.JULY possui valor 6, porém representa o mês de julho.
+        // Caso a implementação trate esse valor como um mês convencional (1-12),
+        // a data poderá ser formatada incorretamente como 15/06/2014.
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> currencyServices.converter(de, para, dataJulho, quantia)
+        );
+
         assertTrue(exception.getMessage().contains("taxa de convers"));
     }
 
