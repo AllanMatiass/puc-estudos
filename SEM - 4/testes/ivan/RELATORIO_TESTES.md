@@ -4,12 +4,16 @@
 
 ---
 
-## 1. Descrição das Novas Partições de Equivalência para a Nova Entrada da Tela (Data de Cotação) e Novas Saídas
+## 1. Descrição das Partições de Equivalência para as Entradas da Tela e Saídas do Sistema
 
-### Tabela de Partições de Equivalência da Entrada
+### Tabela de Partições de Equivalência das Entradas
 
 | Entrada | Classes Válidas | Classes Inválidas | Valores Limite |
 | :--- | :--- | :--- | :--- |
+| **1. Moeda de Origem (`MOEDA_ORIGEM` / `de`)** | **PV1:** Código ISO 4217 de 3 letras cadastrado e suportado (ex: `BRL`, `USD`, `EUR`).<br><br>**PV2:** Código suportado informado em letras minúsculas ou mistas (ex: `usd`, `Brl`). | **PI1:** Código alfabético não suportado ou inexistente (ex: `XYZ`).<br><br>**PI2:** Código com formato inválido ($< 3$ ou $> 3$ caracteres, ex: `US`, `USDD`).<br><br>**PI3:** Valor nulo (`null`) ou string em branco/vazia (`""`). | **L1:** Código de comprimento exatamente igual a 3 caracteres.<br><br>**L2:** Código com 2 caracteres ou 4 caracteres (limites de tamanho).<br><br>**L3:** Moeda de origem idêntica à moeda de destino (`de == para`). |
+| **2. Moeda de Destino (`MOEDA_DESTINO` / `para`)** | **PV1:** Código ISO 4217 cadastrado e suportado, distinto da moeda de origem (ex: `USD` quando origem for `BRL`). | **PI1:** Código idêntico ao da moeda de origem (`de.equalsIgnoreCase(para)`).<br><br>**PI2:** Código alfabético não suportado/inexistente (ex: `XYZ`).<br><br>**PI3:** Valor nulo (`null`) ou string vazia (`""`). | **L1:** Moeda de destino igual à de origem vs. Moeda imediatamente diferente.<br><br>**L2:** Código de comprimento exatamente igual a 3 caracteres. |
+| **3. Quantia a Converter (`QUANTIA` / `quantia`)** | **PV1:** Valor numérico estritamente positivo ($> 0$, ex: `100.0`, `10.50`).<br><br>**PV2:** Valor zero ($= 0.0$), permitido retornando valor zerado. | **PI1:** Valor numérico estritamente negativo ($< 0$, ex: `-10.0`).<br><br>**PI2:** Formato não numérico ou valores especiais (`Double.NaN`, $\pm\infty$). | **L1:** Zero ($0.0$) — fronteira exata entre quantia permitida e negativa.<br><br>**L2:** Menor incremento positivo ($+0.01$) — fronteira do valor mínimo operável.<br><br>**L3:** Menor decremento negativo ($-0.01$) — fronteira imediata de valor proibido. |
+| **4. Par de Conversão (`PAR_CONVERSAO` / `de -> para`)** | **PV1:** Par com taxa de câmbio direta cadastrada na base de dados/mock (ex: `BRL -> USD`, `USD -> BRL`). | **PI1:** Par de moedas suportadas, porém sem taxa de conversão cadastrada entre si (ex: `CAD -> CHF`). | **L1:** Par de moedas existente vs. Par de moedas inexistente no catálogo de taxas. |
 | **5. Data da Cotação (`DT_COTAÇÃO`)** | **PV1:** Data atual do sistema ($D_0$) — busca cotação do momento presente.<br><br>**PV2:** Data histórica válida com cotação existente na base de dados/mock (ex: `15/07/2014`). | **PI1:** Data passada sem cotação cadastrada na base (ex: `10/01/2020`).<br><br>**PI2:** Data futura ($D_{+1}$, $D_{+N}$) — cotações futuras não existem.<br><br>**PI3:** Data nula (`null`) — ausência de valor obrigatório.<br><br>**PI4:** Data com valores impossíveis ou formato inválido (ex: `31/02/2024`). | **L1:** Data atual ($D_0$) — fronteira superior para cotação em tempo real.<br><br>**L2:** Ontem ($D_{-1}$) — fronteira imediata entre cotação atual e histórica.<br><br>**L3:** Amanhã ($D_{+1}$) — fronteira imediata para data futura (inválida).<br><br>**L4:** Dia exato com cotação cadastrada (`15/07/2014`) vs. Dia anterior (`14/07/2014`) e Dia posterior (`16/07/2014`).<br><br>**L5:** Formatação de dia e mês com 1 dígito ($< 10$, ex: `05/04`) e com 2 dígitos ($\ge 10$, ex: `25/11`). |
 
 ---
@@ -18,7 +22,10 @@
 
 | Saída | Caracterização da Saída |
 | :--- | :--- |
-| **S4: Novas saídas associadas à data de cotação da conversão** | **S4.1:** Sucesso com cotação do dia atual — Retorna o valor monetário convertido aplicando a taxa vigente em $D_0$ (chave no padrão `"DE->PARA"`).<br><br>**S4.2:** Sucesso com cotação de data histórica — Retorna o valor monetário convertido aplicando a taxa cadastrada para a data informada (chave no padrão `"DE->PARA (dd/mm/aaaa)"`).<br><br>**S4.3:** Erro por cotação inexistente — Lança `IllegalArgumentException` informando que *"Não há taxa de conversão para as moedas e/ou para a data informada"*.<br><br>**S4.4:** Erro por data nula / inconsistente — Interrupção controlada (ou falha) por entrada inválida/nula. |
+| **S1: Sucesso na Conversão de Moedas** | **S1.1:** Retorna o valor monetário convertido (`double` ou `String` formatada), correspondente ao produto da quantia pela taxa cambial aplicável ($quantia \times taxa$). |
+| **S2: Conversão com Quantia Zerada** | **S2.1:** Retorna `0.0` quando a quantia fornecida for igual a zero ($quantia = 0$), sem gerar exceção. |
+| **S3: Exceções e Mensagens de Erro de Validação/Negócio** | **S3.1: Erro de Quantia Negativa:** Lança `IllegalArgumentException` com a mensagem *"Quantia informada é inválida"* quando $quantia < 0$.<br><br>**S3.2: Erro de Moedas Idênticas:** Lança `IllegalArgumentException` informando que as moedas de origem e destino não podem ser as mesmas.<br><br>**S3.3: Erro de Moeda Inexistente/Inválida:** Lança exceção informando que a moeda não é suportada (ou gera erro por ausência de cadastro).<br><br>**S3.4: Erro de Ausência de Taxa Cambial:** Lança `IllegalArgumentException` informando que não há taxa cadastrada para o par de moedas informado. |
+| **S4: Saídas Associadas à Data de Cotação da Conversão** | **S4.1:** Sucesso com cotação do dia atual — Retorna o valor monetário convertido aplicando a taxa vigente em $D_0$ (chave no padrão `"DE->PARA"`).<br><br>**S4.2:** Sucesso com cotação de data histórica — Retorna o valor monetário convertido aplicando a taxa cadastrada para a data informada (chave no padrão `"DE->PARA (dd/mm/aaaa)"`).<br><br>**S4.3:** Erro por cotação inexistente na data — Lança `IllegalArgumentException` informando que *"Não há taxa de conversão para as moedas e/ou para a data informada"*.<br><br>**S4.4:** Erro por data nula / inconsistente — Interrupção controlada (ou falha) por entrada inválida/nula. |
 
 ---
 
