@@ -948,19 +948,23 @@ public class CurrencyServicesTest {
 
 A cobertura de testes foi executada e mensurada com a ferramenta de Coverage da IDE em conformidade com a instrumentação de bytecode (conforme evidenciado na captura abaixo):
 
-![Cobertura de Testes](img_1.png)
+![Cobertura de Testes](img_2.png)
 
 ### Tabela de Cobertura Obtida
 
 | Elemento / Classe | Cobertura de Classes (Class) | Cobertura de Métodos (Method) | Cobertura de Linhas (Line) | Cobertura de Ramificações (Branch) | Observações |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **`br.edu.puc.currencyconverter`** | **100%** (9/9) | **81%** (60/74) | **92%** (374/405) | **84%** (37/44) | Visão global do pacote contendo classes de produção e testes. |
+| **`br.edu.puc.currencyconverter`** | **100%** (9/9) | **75%** (75/99) | **90%** (465/513) | **73%** (41/56) | **Visão global do pacote (Classes de Produção + Testes).** |
 | ↳ **`CurrencyServices`** | **100%** (1/1) | **100%** (4/4) | **93%** (54/58) | **100%** (22/22) | 100% dos branches e métodos; 4 linhas inalcançáveis de `catch`. |
+| ↳ `CurrencyServicesTest` | 100% (1/1) | 62% (32/51) | 85% (212/249) | 50% (2/4) | Classe de teste unitário e de integração do serviço. |
 | ↳ **`DataAcessMock`** | **100%** (1/1) | **100%** (2/2) | **100%** (20/20) | **100%** (2/2) | 100% de cobertura de todas as taxas e método de busca. |
 | ↳ **`Moeda`** | **100%** (1/1) | **100%** (6/6) | **100%** (12/12) | **100%** (0/0) | 100% no construtor e em todos os getters do DTO. |
 | ↳ **`MoedaISO4217`** | **100%** (1/1) | **100%** (9/9) | **100%** (31/31) | **100%** (6/6) | 100% de cobertura nos enums, métodos de busca e formatação. |
+| ↳ `MoedaISO4217Test` | 100% (1/1) | 69% (9/13) | 92% (58/63) | 35% (7/20) | Classe de teste unitário do enum e formatação. |
+| ↳ `MoedaTest` | 100% (1/1) | 100% (2/2) | 100% (24/24) | 100% (0/0) | Classe de teste unitário do DTO Moeda. |
 | ↳ **`TaxaConversao`** | **100%** (1/1) | **100%** (3/3) | **100%** (9/9) | **100%** (2/2) | 100% de cobertura em construtor, validação cambial e cálculo. |
-| **Total (Código de Produção)** | **100%** (5/5) | **100%** (24/24) | **96,92%** (126/130) | **100%** (32/32) | **100% dos ramos de decisão e métodos cobertos.** |
+| ↳ `TaxaConversaoTest` | 100% (1/1) | 88% (8/9) | 95% (45/47) | 100% (0/0) | Classe de teste de regras cambiais e limites. |
+| **Total (Classes de Produção)** | **100%** (5/5) | **100%** (24/24) | **96,92%** (126/130) | **100%** (32/32) | **100% dos ramos de decisão e métodos de produção cobertos.** |
 
 ### Justificativa Técnica das Linhas Não Executadas (54/58 em `CurrencyServices`)
 
