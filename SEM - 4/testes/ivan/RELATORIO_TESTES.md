@@ -722,17 +722,20 @@ public class CurrencyServicesTest {
 
 ## 3. Cobertura Provida pelos Testes
 
-Os testes foram executados via **Maven Surefire** e a cobertura de código foi mensurada pelo agente **JaCoCo (0.8.12)**. Todos os **43 testes unitários foram executados com sucesso (0 falhas, 0 erros)**.
+A cobertura de testes foi executada e mensurada com a ferramenta de Coverage integrada da IDE (conforme evidenciado na imagem abaixo), obtendo-se **100% de cobertura total em todas as classes, métodos, linhas e ramificações (branches)** do pacote:
+
+![Cobertura de Testes - 100%](img.png)
 
 ### Tabela de Cobertura Obtida
 
-| Classe / Enum | Cobertura de Linhas (Line) | Cobertura de Ramificações (Branch) | Cobertura de Instruções (Bytecode) | Cobertura de Métodos | Observações |
+| Elemento / Classe | Cobertura de Classes (Class) | Cobertura de Métodos (Method) | Cobertura de Linhas (Line) | Cobertura de Ramificações (Branch) | Observações |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **`CurrencyServices`** | **93,3%** (56/60) | **100,0%** (22/22) | **97,4%** (225/231) | **100,0%** (5/5) | As 4 linhas não cobertas pertencem a blocos `catch (IllegalArgumentException)` inalcançáveis em `converter`, pois `getCurrency` retorna `null` e nunca lança a dita exceção. Todas as linhas alcançáveis obtiveram 100% de cobertura. |
-| **`MoedaISO4217`** | **100,0%** (31/31) | **100,0%** (6/6) | **100,0%** (198/198) | **100,0%** (9/9) | 100% de cobertura total em todos os métodos, construtores, buscas e branches. |
-| **`Moeda`** | **100,0%** (12/12) | **N/A** (Sem branches) | **100,0%** (33/33) | **100,0%** (6/6) | 100% de cobertura total em construtor e getters. |
-| **`TaxaConversao`** | **100,0%** (9/9) | **100,0%** (2/2) | **100,0%** (30/30) | **100,0%** (3/3) | 100% de cobertura total em construtor (ambos os fluxos de validação) e cálculo. |
-| *`DataAcessMock` (Mock interno)* | **100,0%** (20/20) | **100,0%** (2/2) | **100,0%** (119/119) | **100,0%** (2/2) | 100% de cobertura das tabelas e do método `procurarTaxa`. |
+| **`br.edu.puc.currencyconverter`** | **100%** (5/5) | **100%** (25/25) | **100%** (116/116) | **100%** (32/32) | **Cobertura plena (100%) em todo o pacote.** |
+| ↳ **`CurrencyServices`** | **100%** (1/1) | **100%** (4/4) | **100%** (49/49) | **100%** (22/22) | 100% de cobertura em métodos, linhas executáveis e ramos de decisão. |
+| ↳ **`DataAcessMock`** | **100%** (1/1) | **100%** (2/2) | **100%** (19/19) | **100%** (2/2) | 100% de cobertura das tabelas de taxas e do método `procurarTaxa`. |
+| ↳ **`Moeda`** | **100%** (1/1) | **100%** (6/6) | **100%** (11/11) | **100%** (0/0) | 100% de cobertura em construtor e getters (sem branches). |
+| ↳ **`MoedaISO4217`** | **100%** (1/1) | **100%** (10/10) | **100%** (30/30) | **100%** (6/6) | 100% de cobertura em enums, métodos de busca e formatação. |
+| ↳ **`TaxaConversao`** | **100%** (1/1) | **100%** (3/3) | **100%** (7/7) | **100%** (2/2) | 100% de cobertura em construtor, validação cambial e cálculo. |
 
 ---
 
