@@ -114,6 +114,30 @@ public class MoedaISO4217Test {
     }
 
     @Test
+    @DisplayName("Validação de Entradas Inválidas no Enum: Strings vazias ou com espaços devem lançar exceção")
+    public void deveLancarExcecaoParaCodigosVaziosOuComEspacos() {
+        assertThrows(IllegalArgumentException.class, () -> MoedaISO4217.obterPorCodigo(""));
+        assertThrows(IllegalArgumentException.class, () -> MoedaISO4217.obterPorCodigo(" BRL "));
+        assertThrows(IllegalArgumentException.class, () -> MoedaISO4217.obterPorCodigo("US"));
+    }
+
+    @Test
+    @DisplayName("Formatação Monetária com Zero e Negativo")
+    public void deveFormatarCorretamenteZeroENegativo() {
+        // Arrange
+        MoedaISO4217 usd = MoedaISO4217.USD;
+
+        // Act & Assert
+        String formatadoZero = usd.formatar(BigDecimal.ZERO);
+        assertNotNull(formatadoZero);
+        assertTrue(formatadoZero.contains("0.00") || formatadoZero.contains("0,00"));
+
+        String formatadoNegativo = usd.formatar(new BigDecimal("-10.50"));
+        assertNotNull(formatadoNegativo);
+        assertTrue(formatadoNegativo.contains("10.50") || formatadoNegativo.contains("10,50"));
+    }
+
+    @Test
     @DisplayName("ANOMALIA: AUD possui código numérico 30 devido ao literal octal 036")
     public void deveVerificarCodigoNumericoAudComportamentoAtual() {
 

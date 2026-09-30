@@ -391,4 +391,177 @@ public class CurrencyServicesTest {
             currencyServices.converter(de, para, dataNula, quantia);
         });
     }
+
+    // ==========================================
+    // Testes Complementares de Domínio, Limites e Robustez
+    // ==========================================
+
+    @Test
+    @DisplayName("Validação de Parâmetro Nulo: isValidCurrency com null lança NullPointerException")
+    public void deveDemonstrarNullPointerExceptionEmIsValidCurrencyComNull() {
+        // Act & Assert
+        // O código chama allCurrency[i].getCodigoAlfabetico().compareToIgnoreCase(codigoAlfabetico) sem validar null
+        assertThrows(NullPointerException.class, () -> {
+            currencyServices.isValidCurrency(null);
+        });
+    }
+
+    @Test
+    @DisplayName("Validação de Parâmetro Nulo: getCurrency com null lança NullPointerException")
+    public void deveDemonstrarNullPointerExceptionEmGetCurrencyComNull() {
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            currencyServices.getCurrency(null);
+        });
+    }
+
+    @Test
+    @DisplayName("Anomalia Funcional de Sensibilidade de Caixa: converter rejeita moedas em minúsculo aceitas em isValidCurrency")
+    public void deveDemonstrarFalhaAoConverterComMoedasMinusculasDevidoSensibilidadeDeCaixaNaChave() {
+        // Arrange
+        String de = "brl";
+        String para = "usd";
+        Calendar hoje = Calendar.getInstance();
+        double quantia = 100.0;
+
+        // Act & Assert
+        // isValidCurrency aceita minúsculo (case-insensitive):
+        assertTrue(currencyServices.isValidCurrency(de));
+        assertTrue(currencyServices.isValidCurrency(para));
+
+        // Porém converter concatena a chave como "brl->usd", que não bate com "BRL->USD" no HashMap do mock:
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter(de, para, hoje, quantia);
+        });
+        assertTrue(exception.getMessage().contains("Não há taxa de conversão"));
+    }
+
+    @Test
+    @DisplayName("Anomalia Crítica: Data de Agosto consome indevidamente a cotação de Julho")
+    public void deveDemonstrarAnomaliaDataDeAgostoConsumindoTaxaDeJulho() {
+        // Arrange
+        String de = "BRL";
+        String para = "USD";
+        Calendar dataAgosto = Calendar.getInstance();
+        dataAgosto.set(Calendar.YEAR, 2014);
+        dataAgosto.set(Calendar.MONTH, Calendar.AUGUST); // Calendar.AUGUST é 7
+        dataAgosto.set(Calendar.DAY_OF_MONTH, 15);
+        double quantia = 100.0;
+
+        // Act
+        // Como o código faz month = dt.get(Calendar.MONTH) sem somar 1, para agosto (7)
+        // a chave gerada é "15/07/2014". O mock possui taxa para 15/07/2014 (0.45),
+        // portanto a conversão para agosto tem sucesso utilizando a taxa de julho!
+        double resultado = currencyServices.converter(de, para, dataAgosto, quantia);
+
+        // Assert
+        assertEquals(45.0, resultado, 0.0001,
+                "Demonstra anomalia: consulta para 15/08/2014 utilizou a cotação de 15/07/2014 (0.45)!");
+    }
+
+    @Test
+    @DisplayName("Todas as Cotações Históricas de 15/07/2014 cadastradas no Mock")
+    public void deveConverterTodasAsCotacoesHistoricasCadastradas() {
+        // Arrange
+        Calendar dataHistorica = Calendar.getInstance();
+        dataHistorica.set(Calendar.YEAR, 2014);
+        dataHistorica.set(Calendar.MONTH, 7); // Mês 7 para gerar "07" no getter do código original
+        dataHistorica.set(Calendar.DAY_OF_MONTH, 15);
+
+        // Act & Assert
+        // BRL -> USD: 0.45 * 100 = 45.0
+        assertEquals(45.0, currencyServices.converter("BRL", "USD", dataHistorica, 100.0), 0.0001);
+        // BRL -> GBP: 0.26 * 100 = 26.0
+        assertEquals(26.0, currencyServices.converter("BRL", "GBP", dataHistorica, 100.0), 0.0001);
+        // BRL -> EUR: 0.33 * 100 = 33.0
+        assertEquals(33.0, currencyServices.converter("BRL", "EUR", dataHistorica, 100.0), 0.0001);
+    }
+
+    @Test
+    @DisplayName("Todas as 10 Cotações Atuais cadastradas no Mock (Ida e Volta)")
+    public void deveConverterTodosOs10ParesComCotacaoAtual() {
+        // Arrange
+        Calendar hoje = Calendar.getInstance();
+
+        // Act & Assert - 5 taxas de BRL para outras moedas
+        assertEquals(20.0, currencyServices.converter("BRL", "USD", hoje, 100.0), 0.0001); // 0.20
+        assertEquals(14.0, currencyServices.converter("BRL", "GBP", hoje, 100.0), 0.0001); // 0.14
+        assertEquals(17.0, currencyServices.converter("BRL", "EUR", hoje, 100.0), 0.0001); // 0.17
+        assertEquals(16.0, currencyServices.converter("BRL", "CHF", hoje, 100.0), 0.0001); // 0.16
+        assertEquals(27.0, currencyServices.converter("BRL", "CAD", hoje, 100.0), 0.0001); // 0.27
+
+        // Act & Assert - 5 taxas das outras moedas para BRL
+        assertEquals(511.0, currencyServices.converter("USD", "BRL", hoje, 100.0), 0.0001); // 5.11
+        assertEquals(586.0, currencyServices.converter("EUR", "BRL", hoje, 100.0), 0.0001); // 5.86
+        assertEquals(683.0, currencyServices.converter("GBP", "BRL", hoje, 100.0), 0.0001); // 6.83
+        assertEquals(622.0, currencyServices.converter("CHF", "BRL", hoje, 100.0), 0.0001); // 6.22
+        assertEquals(364.0, currencyServices.converter("CAD", "BRL", hoje, 100.0), 0.0001); // 3.64
+    }
+
+    @Test
+    @DisplayName("Valores Limites de Data Histórica: 14/07/2014 e 16/07/2014 não possuem taxa")
+    public void deveLancarExcecaoParaDiasImediatamenteAnteriorEPosteriorADataHistorica() {
+        // Arrange
+        Calendar dia14 = Calendar.getInstance();
+        dia14.set(2014, 7, 14);
+
+        Calendar dia16 = Calendar.getInstance();
+        dia16.set(2014, 7, 16);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", dia14, 100.0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", dia16, 100.0);
+        });
+    }
+
+    @Test
+    @DisplayName("Valores Limites de Data: Ano bissexto (29/02/2024) e ano comum (28/02/2023) sem taxa")
+    public void deveLancarExcecaoParaDatasValidasDeFevereiroSemTaxa() {
+        // Arrange
+        Calendar bissexto = Calendar.getInstance();
+        bissexto.set(2024, 2, 29); // Mês no código sem +1
+
+        Calendar comum = Calendar.getInstance();
+        comum.set(2023, 2, 28);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", bissexto, 100.0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", comum, 100.0);
+        });
+    }
+
+    @Test
+    @DisplayName("Anomalia de Robustez: API aceita Double.NaN e Double.POSITIVE_INFINITY sem validar")
+    public void deveDemonstrarAceitacaoDeValoresNaoFinitosNaNEInfinito() {
+        // Arrange
+        Calendar hoje = Calendar.getInstance();
+
+        // Act & Assert
+        // A condição 'if (quantia < 0)' avalia para false quando quantia é NaN ou +Infinity!
+        // Logo, a API aceita esses valores e calcula o produto:
+        double resultadoNaN = currencyServices.converter("BRL", "USD", hoje, Double.NaN);
+        assertTrue(Double.isNaN(resultadoNaN), "API permite quantia NaN e retorna NaN");
+
+        double resultadoInf = currencyServices.converter("BRL", "USD", hoje, Double.POSITIVE_INFINITY);
+        assertTrue(Double.isInfinite(resultadoInf), "API permite quantia Infinity e retorna Infinity");
+    }
+
+    @Test
+    @DisplayName("Anomalia de Serialização: getAllCurrencies retorna JSON com aspas duplamente escapadas")
+    public void deveDemonstrarDuplaSerializacaoJsonEmGetAllCurrencies() {
+        // Act
+        String jsonRetornado = currencyServices.getAllCurrencies();
+
+        // Assert
+        // Como o método faz gson.toJson(moedas) seguido de gson.toJson(json),
+        // o retorno começa e termina com aspas de string JSON encapsulada:
+        assertTrue(jsonRetornado.startsWith("\"") && jsonRetornado.endsWith("\""));
+        assertTrue(jsonRetornado.contains("\\\"codigoAlfabetico\\\""));
+    }
 }

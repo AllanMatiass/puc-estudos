@@ -219,6 +219,30 @@ public class MoedaISO4217Test {
     }
 
     @Test
+    @DisplayName("Validação de Entradas Inválidas no Enum: Strings vazias ou com espaços devem lançar exceção")
+    public void deveLancarExcecaoParaCodigosVaziosOuComEspacos() {
+        assertThrows(IllegalArgumentException.class, () -> MoedaISO4217.obterPorCodigo(""));
+        assertThrows(IllegalArgumentException.class, () -> MoedaISO4217.obterPorCodigo(" BRL "));
+        assertThrows(IllegalArgumentException.class, () -> MoedaISO4217.obterPorCodigo("US"));
+    }
+
+    @Test
+    @DisplayName("Formatação Monetária com Zero e Negativo")
+    public void deveFormatarCorretamenteZeroENegativo() {
+        // Arrange
+        MoedaISO4217 usd = MoedaISO4217.USD;
+
+        // Act & Assert
+        String formatadoZero = usd.formatar(BigDecimal.ZERO);
+        assertNotNull(formatadoZero);
+        assertTrue(formatadoZero.contains("0.00") || formatadoZero.contains("0,00"));
+
+        String formatadoNegativo = usd.formatar(new BigDecimal("-10.50"));
+        assertNotNull(formatadoNegativo);
+        assertTrue(formatadoNegativo.contains("10.50") || formatadoNegativo.contains("10,50"));
+    }
+
+    @Test
     @DisplayName("Anomalia detectada: AUD possui código numérico 30 devido ao literal octal 036")
     public void deveVerificarCodigoNumericoAudComportamentoAtual() {
         // Arrange
@@ -323,6 +347,44 @@ public class TaxaConversaoTest {
 
         // Assert
         assertEquals(0.0, resultado, 0.0001);
+    }
+
+    @Test
+    @DisplayName("Valor Limite Exploratório: Taxa muito alta (1.000.000)")
+    public void deveCalcularComTaxaMuitoAlta() {
+        // Arrange
+        TaxaConversao taxa = new TaxaConversao(MoedaISO4217.BRL, MoedaISO4217.USD);
+        taxa.setTaxaConversao(1_000_000.0);
+        double quantia = 100.0;
+
+        // Act & Assert
+        assertEquals(100_000_000.0, taxa.converter(quantia), 0.0001);
+    }
+
+    @Test
+    @DisplayName("Valor Limite Exploratório: Taxa extremamente baixa (1e-12)")
+    public void deveCalcularComTaxaExtremamenteBaixa() {
+        // Arrange
+        TaxaConversao taxa = new TaxaConversao(MoedaISO4217.BRL, MoedaISO4217.USD);
+        taxa.setTaxaConversao(1e-12);
+        double quantia = 100.0;
+
+        // Act & Assert
+        assertEquals(1e-10, taxa.converter(quantia), 1e-15);
+    }
+
+    @Test
+    @DisplayName("Anomalia de Robustez / Transbordo: Multiplicação com Double.MAX_VALUE resulta em Infinity sem proteção")
+    public void deveDemonstrarTransbordoComDoubleMaxValue() {
+        // Arrange
+        TaxaConversao taxa = new TaxaConversao(MoedaISO4217.USD, MoedaISO4217.BRL);
+        taxa.setTaxaConversao(5.11);
+
+        // Act
+        double resultado = taxa.converter(Double.MAX_VALUE);
+
+        // Assert
+        assertTrue(Double.isInfinite(resultado), "Cálculo excede limite do ponto flutuante e retorna Infinity");
     }
 }
 ```
@@ -715,6 +777,168 @@ public class CurrencyServicesTest {
             currencyServices.converter(de, para, dataNula, quantia);
         });
     }
+
+    // ==========================================
+    // Testes Complementares de Domínio, Limites e Robustez
+    // ==========================================
+
+    @Test
+    @DisplayName("Validação de Parâmetro Nulo: isValidCurrency com null lança NullPointerException")
+    public void deveDemonstrarNullPointerExceptionEmIsValidCurrencyComNull() {
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            currencyServices.isValidCurrency(null);
+        });
+    }
+
+    @Test
+    @DisplayName("Validação de Parâmetro Nulo: getCurrency com null lança NullPointerException")
+    public void deveDemonstrarNullPointerExceptionEmGetCurrencyComNull() {
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            currencyServices.getCurrency(null);
+        });
+    }
+
+    @Test
+    @DisplayName("Anomalia Funcional de Sensibilidade de Caixa: converter rejeita moedas em minúsculo aceitas em isValidCurrency")
+    public void deveDemonstrarFalhaAoConverterComMoedasMinusculasDevidoSensibilidadeDeCaixaNaChave() {
+        // Arrange
+        String de = "brl";
+        String para = "usd";
+        Calendar hoje = Calendar.getInstance();
+        double quantia = 100.0;
+
+        // Act & Assert
+        assertTrue(currencyServices.isValidCurrency(de));
+        assertTrue(currencyServices.isValidCurrency(para));
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter(de, para, hoje, quantia);
+        });
+        assertTrue(exception.getMessage().contains("Não há taxa de conversão"));
+    }
+
+    @Test
+    @DisplayName("Anomalia Crítica: Data de Agosto consome indevidamente a cotação de Julho")
+    public void deveDemonstrarAnomaliaDataDeAgostoConsumindoTaxaDeJulho() {
+        // Arrange
+        String de = "BRL";
+        String para = "USD";
+        Calendar dataAgosto = Calendar.getInstance();
+        dataAgosto.set(Calendar.YEAR, 2014);
+        dataAgosto.set(Calendar.MONTH, Calendar.AUGUST); // Calendar.AUGUST é 7
+        dataAgosto.set(Calendar.DAY_OF_MONTH, 15);
+        double quantia = 100.0;
+
+        // Act
+        // month = dt.get(Calendar.MONTH) produz 7 sem somar 1; a chave gerada é "15/07/2014".
+        // O mock possui taxa para 15/07/2014 (0.45), consumindo a cotação de julho indevidamente!
+        double resultado = currencyServices.converter(de, para, dataAgosto, quantia);
+
+        // Assert
+        assertEquals(45.0, resultado, 0.0001,
+                "Demonstra anomalia: consulta para 15/08/2014 utilizou a cotação de 15/07/2014 (0.45)!");
+    }
+
+    @Test
+    @DisplayName("Todas as Cotações Históricas de 15/07/2014 cadastradas no Mock")
+    public void deveConverterTodasAsCotacoesHistoricasCadastradas() {
+        // Arrange
+        Calendar dataHistorica = Calendar.getInstance();
+        dataHistorica.set(Calendar.YEAR, 2014);
+        dataHistorica.set(Calendar.MONTH, 7); // Mês 7 para gerar "07" no getter do código original
+        dataHistorica.set(Calendar.DAY_OF_MONTH, 15);
+
+        // Act & Assert
+        assertEquals(45.0, currencyServices.converter("BRL", "USD", dataHistorica, 100.0), 0.0001);
+        assertEquals(26.0, currencyServices.converter("BRL", "GBP", dataHistorica, 100.0), 0.0001);
+        assertEquals(33.0, currencyServices.converter("BRL", "EUR", dataHistorica, 100.0), 0.0001);
+    }
+
+    @Test
+    @DisplayName("Todas as 10 Cotações Atuais cadastradas no Mock (Ida e Volta)")
+    public void deveConverterTodosOs10ParesComCotacaoAtual() {
+        // Arrange
+        Calendar hoje = Calendar.getInstance();
+
+        // Act & Assert - 5 taxas de BRL para outras moedas
+        assertEquals(20.0, currencyServices.converter("BRL", "USD", hoje, 100.0), 0.0001);
+        assertEquals(14.0, currencyServices.converter("BRL", "GBP", hoje, 100.0), 0.0001);
+        assertEquals(17.0, currencyServices.converter("BRL", "EUR", hoje, 100.0), 0.0001);
+        assertEquals(16.0, currencyServices.converter("BRL", "CHF", hoje, 100.0), 0.0001);
+        assertEquals(27.0, currencyServices.converter("BRL", "CAD", hoje, 100.0), 0.0001);
+
+        // Act & Assert - 5 taxas das outras moedas para BRL
+        assertEquals(511.0, currencyServices.converter("USD", "BRL", hoje, 100.0), 0.0001);
+        assertEquals(586.0, currencyServices.converter("EUR", "BRL", hoje, 100.0), 0.0001);
+        assertEquals(683.0, currencyServices.converter("GBP", "BRL", hoje, 100.0), 0.0001);
+        assertEquals(622.0, currencyServices.converter("CHF", "BRL", hoje, 100.0), 0.0001);
+        assertEquals(364.0, currencyServices.converter("CAD", "BRL", hoje, 100.0), 0.0001);
+    }
+
+    @Test
+    @DisplayName("Valores Limites de Data Histórica: 14/07/2014 e 16/07/2014 não possuem taxa")
+    public void deveLancarExcecaoParaDiasImediatamenteAnteriorEPosteriorADataHistorica() {
+        // Arrange
+        Calendar dia14 = Calendar.getInstance();
+        dia14.set(2014, 7, 14);
+
+        Calendar dia16 = Calendar.getInstance();
+        dia16.set(2014, 7, 16);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", dia14, 100.0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", dia16, 100.0);
+        });
+    }
+
+    @Test
+    @DisplayName("Valores Limites de Data: Ano bissexto (29/02/2024) e ano comum (28/02/2023) sem taxa")
+    public void deveLancarExcecaoParaDatasValidasDeFevereiroSemTaxa() {
+        // Arrange
+        Calendar bissexto = Calendar.getInstance();
+        bissexto.set(2024, 2, 29);
+
+        Calendar comum = Calendar.getInstance();
+        comum.set(2023, 2, 28);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", bissexto, 100.0);
+        });
+        assertThrows(IllegalArgumentException.class, () -> {
+            currencyServices.converter("BRL", "USD", comum, 100.0);
+        });
+    }
+
+    @Test
+    @DisplayName("Anomalia de Robustez: API aceita Double.NaN e Double.POSITIVE_INFINITY sem validar")
+    public void deveDemonstrarAceitacaoDeValoresNaoFinitosNaNEInfinito() {
+        // Arrange
+        Calendar hoje = Calendar.getInstance();
+
+        // Act & Assert
+        double resultadoNaN = currencyServices.converter("BRL", "USD", hoje, Double.NaN);
+        assertTrue(Double.isNaN(resultadoNaN), "API permite quantia NaN e retorna NaN");
+
+        double resultadoInf = currencyServices.converter("BRL", "USD", hoje, Double.POSITIVE_INFINITY);
+        assertTrue(Double.isInfinite(resultadoInf), "API permite quantia Infinity e retorna Infinity");
+    }
+
+    @Test
+    @DisplayName("Anomalia de Serialização: getAllCurrencies retorna JSON com aspas duplamente escapadas")
+    public void deveDemonstrarDuplaSerializacaoJsonEmGetAllCurrencies() {
+        // Act
+        String jsonRetornado = currencyServices.getAllCurrencies();
+
+        // Assert
+        assertTrue(jsonRetornado.startsWith("\"") && jsonRetornado.endsWith("\""));
+        assertTrue(jsonRetornado.contains("\\\"codigoAlfabetico\\\""));
+    }
 }
 ```
 
@@ -722,20 +946,30 @@ public class CurrencyServicesTest {
 
 ## 3. Cobertura Provida pelos Testes
 
-A cobertura de testes foi executada e mensurada com a ferramenta de Coverage integrada da IDE (conforme evidenciado na imagem abaixo), obtendo-se **100% de cobertura total em todas as classes, métodos, linhas e ramificações (branches)** do pacote:
+A cobertura de testes foi executada e mensurada com a ferramenta de Coverage da IDE em conformidade com a instrumentação de bytecode (conforme evidenciado na captura abaixo):
 
-![Cobertura de Testes - 100%](img.png)
+![Cobertura de Testes](img_1.png)
 
 ### Tabela de Cobertura Obtida
 
 | Elemento / Classe | Cobertura de Classes (Class) | Cobertura de Métodos (Method) | Cobertura de Linhas (Line) | Cobertura de Ramificações (Branch) | Observações |
 | :--- | :---: | :---: | :---: | :---: | :--- |
-| **`br.edu.puc.currencyconverter`** | **100%** (5/5) | **100%** (25/25) | **100%** (116/116) | **100%** (32/32) | **Cobertura plena (100%) em todo o pacote.** |
-| ↳ **`CurrencyServices`** | **100%** (1/1) | **100%** (4/4) | **100%** (49/49) | **100%** (22/22) | 100% de cobertura em métodos, linhas executáveis e ramos de decisão. |
-| ↳ **`DataAcessMock`** | **100%** (1/1) | **100%** (2/2) | **100%** (19/19) | **100%** (2/2) | 100% de cobertura das tabelas de taxas e do método `procurarTaxa`. |
-| ↳ **`Moeda`** | **100%** (1/1) | **100%** (6/6) | **100%** (11/11) | **100%** (0/0) | 100% de cobertura em construtor e getters (sem branches). |
-| ↳ **`MoedaISO4217`** | **100%** (1/1) | **100%** (10/10) | **100%** (30/30) | **100%** (6/6) | 100% de cobertura em enums, métodos de busca e formatação. |
-| ↳ **`TaxaConversao`** | **100%** (1/1) | **100%** (3/3) | **100%** (7/7) | **100%** (2/2) | 100% de cobertura em construtor, validação cambial e cálculo. |
+| **`br.edu.puc.currencyconverter`** | **100%** (9/9) | **81%** (60/74) | **92%** (374/405) | **84%** (37/44) | Visão global do pacote contendo classes de produção e testes. |
+| ↳ **`CurrencyServices`** | **100%** (1/1) | **100%** (4/4) | **93%** (54/58) | **100%** (22/22) | 100% dos branches e métodos; 4 linhas inalcançáveis de `catch`. |
+| ↳ **`DataAcessMock`** | **100%** (1/1) | **100%** (2/2) | **100%** (20/20) | **100%** (2/2) | 100% de cobertura de todas as taxas e método de busca. |
+| ↳ **`Moeda`** | **100%** (1/1) | **100%** (6/6) | **100%** (12/12) | **100%** (0/0) | 100% no construtor e em todos os getters do DTO. |
+| ↳ **`MoedaISO4217`** | **100%** (1/1) | **100%** (9/9) | **100%** (31/31) | **100%** (6/6) | 100% de cobertura nos enums, métodos de busca e formatação. |
+| ↳ **`TaxaConversao`** | **100%** (1/1) | **100%** (3/3) | **100%** (9/9) | **100%** (2/2) | 100% de cobertura em construtor, validação cambial e cálculo. |
+| **Total (Código de Produção)** | **100%** (5/5) | **100%** (24/24) | **96,92%** (126/130) | **100%** (32/32) | **100% dos ramos de decisão e métodos cobertos.** |
+
+### Justificativa Técnica das Linhas Não Executadas (54/58 em `CurrencyServices`)
+
+As **4 linhas não executadas** em `CurrencyServices` (linhas 76–77 e 84–85) correspondem estritamente aos blocos `catch (IllegalArgumentException e) { throw e; }` que envolvem as chamadas `this.getCurrency(de)` e `this.getCurrency(para)`. 
+
+Na implementação original fornecida:
+1. O método `getCurrency(codigo)` retorna `null` quando o código não é encontrado e estoura `NullPointerException` se o código for nulo. Ele **nunca** lança `IllegalArgumentException`.
+2. Como a exceção nunca é atirada pelo método chamado, as instruções dentro desses dois blocos `catch` são **código morto / inalcançável**.
+3. **Ausência de Contradição:** A suíte de testes atinge **100% de cobertura dos ramos condicionais (32/32 branches)** e a totalidade das linhas alcançáveis pelo fluxo do programa, preservando a integridade do código original sem criar mocks artificiais para forçar a entrada nesses blocos.
 
 ---
 
@@ -744,12 +978,16 @@ A cobertura de testes foi executada e mensurada com a ferramenta de Coverage int
 | Situação Reportada (Falha, Anomalia, Deficiência ou Sugestão) | Descrição Detalhada | Localização no Código (Classe / Método / Instrução) |
 | :--- | :--- | :--- |
 | **1. Anomalia / Falha Funcional Crítica** | **Indexação base 0 de `Calendar.MONTH` ao formatar a data histórica.**<br>Na API `java.util.Calendar`, os meses são numerados de 0 a 11 (Janeiro = 0, Julho = 6). No método `converter`, a formatação extrai `month = dt.get(Calendar.MONTH)` e concatena diretamente sem somar `+ 1`. Dessa forma, ao passar a data `15/07/2014` com `Calendar.JULY` (6), a chave formatada fica `"15/06/2014"`, não encontrando o registro `"BRL->USD (15/07/2014)"` existente no mock e gerando falha indevida. | `CurrencyServices.java`<br>Método: `converter`<br>Instrução: `month = dt.get(Calendar.MONTH);` |
-| **2. Falha de Robustez (Crash por NPE)** | **Ausência de validação defensiva para data nula (`dt == null`).**<br>Se o consumidor chamar `converter` passando `dt = null`, a execução invoca imediatamente `dt.get(Calendar.YEAR)`, resultando em `NullPointerException` descontrolado em vez de uma `IllegalArgumentException` informativa (`"Data de cotação não pode ser nula"`). | `CurrencyServices.java`<br>Método: `converter`<br>Instrução: `dt.get(Calendar.YEAR)` |
-| **3. Falha de Tratamento / Código Morto** | **Blocos `catch (IllegalArgumentException)` inalcançáveis e NPE ao passar moedas inválidas.**<br>O método `converter` envolve a chamada `this.getCurrency(de)` em um bloco `try-catch` capturando `IllegalArgumentException`. Contudo, `getCurrency()` nunca lança exceção: quando a moeda não existe, ela retorna `null`. Na sequência, `TaxaConversao(base, convers)` tenta executar `base.getCodigoAlfabetico()`, gerando um inesperado `NullPointerException`. | `CurrencyServices.java`<br>Método: `converter`<br>Instruções: Linhas 76-89 (`base = this.getCurrency(de)`) |
-| **4. Falha de Robustez (NPE)** | **Moeda de entrada nula gera `NullPointerException` em `getCurrency` e `isValidCurrency`.**<br>Caso seja passado `null` para `isValidCurrency` ou `getCurrency`, a linha `allCurrency[i].getCodigoAlfabetico().compareToIgnoreCase(codigoAlfabetico)` lança `NullPointerException`, pois não há verificação prévia de nulidade para o parâmetro. | `CurrencyServices.java`<br>Métodos: `isValidCurrency` e `getCurrency`<br>Instrução: `.compareToIgnoreCase(codigoAlfabetico)` |
-| **5. Anomalia de Dados (Bug de Compilação/Lógica)** | **Código numérico do AUD é inicializado como literal octal `036`.**<br>Em Java, literais inteiros iniciados com `0` são interpretados em base octal ($036_8 = 3 \times 8^1 + 6 = 30_{10}$). O código numérico ISO 4217 do AUD é `036` (decimal 36), mas na classe avalia para `30`. | `MoedaISO4217.java`<br>Declaração da constante: `AUD`<br>Instrução: `AUD("AUD", 036, 2, ...)` |
-| **6. Anomalia Funcional (Serialização Dupla)** | **JSON duplamente serializado / escapado em `getAllCurrencies`.**<br>O método converte a lista para JSON através de `json = gson.toJson(moedas)` e em seguida retorna `gson.toJson(json)`. Isso gera uma string JSON com escape de aspas (`"\"[{\\\"codigoAlfabetico\\\":...}]\""`), forçando os clientes HTTP a fazerem `JSON.parse` duas vezes. | `CurrencyServices.java`<br>Método: `getAllCurrencies`<br>Instrução: `return gson.toJson(json);` |
-| **7. Anomalia de Codificação e Ortografia** | **Mensagem de erro com caracteres corrompidos e erro ortográfico.**<br>A mensagem de erro no construtor de `TaxaConversao` contém encoding corrompido (`"Moedas de base e convesao nï¿½o podem ser as mesmas"`), além de erro ortográfico na palavra *"conversão"* grafada como *"convesao"*. Além disso, o atributo da classe chama-se `conver`. | `TaxaConversao.java`<br>Construtor: `TaxaConversao`<br>Instrução: `throw new IllegalArgumentException(...)` |
-| **8. Deficiência de Nomenclatura** | **Erro ortográfico no nome da classe do mock (`DataAcessMock`).**<br>O nome da classe está sem uma letra 'c' (`DataAcessMock` ao invés de `DataAccessMock`). | `DataAcessMock.java`<br>Declaração: `class DataAcessMock` |
-| **9. Sugestão Arquitetural** | **Uso de tipos legados (`Calendar`) e imprecisão monetária com ponto flutuante (`double`).**<br>Recomenda-se substituir a classe legada e mutável `Calendar` pela moderna API `java.time.LocalDate` (Java 8+). Além disso, cálculos cambiais devem utilizar `BigDecimal` para evitar perda de precisão binária inerente ao tipo primitivo `double` (IEEE 754). | `CurrencyServices.java` e `TaxaConversao.java`<br>Método: `converter` |
-| **10. Deficiência de Design / Violação DRY** | **Duplicação de busca de moeda entre `CurrencyServices` e `MoedaISO4217`.**<br>A enum `MoedaISO4217` já possui o método estático `obterPorCodigo(String codigo)` que busca a moeda e lança `IllegalArgumentException` quando inválida. O serviço `CurrencyServices` reescreveu o loop de busca em `getCurrency()` e `isValidCurrency()`, retornando `null` em vez de reutilizar a lógica centralizada do enum. | `CurrencyServices.java`<br>Métodos: `getCurrency` e `isValidCurrency` |
+| **2. Anomalia Funcional Crítica (Efeito Colateral)** | **Data de Agosto consome indevidamente cotação de Julho.**<br>Como consequência direta do defeito de formatação de mês sem `+ 1`, se uma consulta for realizada para `15/08/2014` (`Calendar.AUGUST = 7`), o método extrai `7` e monta a chave `"15/07/2014"`. Como essa chave existe no mock com taxa `0.45`, a requisição para agosto tem sucesso utilizando a taxa de julho, sem acusar indisponibilidade de cotação. | `CurrencyServices.java`<br>Método: `converter`<br>Instrução: `month = dt.get(Calendar.MONTH);` e montagem da chave |
+| **3. Inconsistência Funcional (Sensibilidade de Caixa)** | **Moedas em minúsculo aceitas na consulta, mas rejeitadas na conversão.**<br>O método `isValidCurrency` utiliza `.compareToIgnoreCase` e aceita códigos em minúsculo (ex: `"usd"`, `"brl"`). Contudo, o método `converter` concatena a chave sem normalizar para maiúsculas (`chave = de + "->" + para`), gerando `"brl->usd"`, que não corresponde a `"BRL->USD"` no `HashMap`, lançando erro de taxa inexistente. | `CurrencyServices.java`<br>Método: `converter`<br>Instrução: `String chave = de+"->"+para;` |
+| **4. Falha de Robustez (Crash por NPE)** | **Ausência de validação defensiva para data nula (`dt == null`).**<br>Se o consumidor chamar `converter` passando `dt = null`, a execução invoca imediatamente `dt.get(Calendar.YEAR)`, resultando em `NullPointerException` descontrolado em vez de uma `IllegalArgumentException` informativa (`"Data de cotação não pode ser nula"`). | `CurrencyServices.java`<br>Método: `converter`<br>Instrução: `dt.get(Calendar.YEAR)` |
+| **5. Falha de Tratamento / Código Morto** | **Blocos `catch (IllegalArgumentException)` inalcançáveis e NPE ao passar moedas inválidas.**<br>O método `converter` envolve a chamada `this.getCurrency(de)` em um bloco `try-catch` capturando `IllegalArgumentException`. Contudo, `getCurrency()` nunca lança exceção: quando a moeda não existe, ela retorna `null`. Na sequência, `TaxaConversao(base, convers)` tenta executar `base.getCodigoAlfabetico()`, gerando um inesperado `NullPointerException`. | `CurrencyServices.java`<br>Método: `converter`<br>Instruções: Linhas 76-89 (`base = this.getCurrency(de)`) |
+| **6. Falha de Robustez (NPE em Parâmetros Nulos)** | **Moeda de entrada nula gera `NullPointerException` em `getCurrency` e `isValidCurrency`.**<br>Caso seja passado `null` para `isValidCurrency` ou `getCurrency`, a linha `allCurrency[i].getCodigoAlfabetico().compareToIgnoreCase(codigoAlfabetico)` lança `NullPointerException`, pois não há verificação prévia de nulidade para o parâmetro. | `CurrencyServices.java`<br>Métodos: `isValidCurrency` e `getCurrency`<br>Instrução: `.compareToIgnoreCase(codigoAlfabetico)` |
+| **7. Fragilidade de Robustez (Valores Não Finitos)** | **Quantias `NaN` e `+Infinity` aceitas sem validação.**<br>A validação `if (quantia < 0)` avalia para `false` quando o valor fornecido for `Double.NaN` ou `Double.POSITIVE_INFINITY`. Como resultado, a API aceita esses valores e multiplica pela taxa, gerando resultados monetários não finitos (`NaN` ou `Infinity`). | `CurrencyServices.java`<br>Método: `converter`<br>Instrução: `if (quantia < 0)` |
+| **8. Fragilidade Aritmética (Transbordo Numérico)** | **Multiplicação com `Double.MAX_VALUE` transborda para `Infinity`.**<br>Ao converter quantias extremamente altas com taxas maiores que 1, a multiplicação em ponto flutuante excede o valor máximo finito, resultando em `Infinity` sem lançar erro de limite financeiro ou estouro de escala. | `TaxaConversao.java`<br>Método: `converter`<br>Instrução: `return quantia * this.taxaConversao;` |
+| **9. Anomalia de Dados (Bug de Compilação/Lógica)** | **Código numérico do AUD é inicializado como literal octal `036`.**<br>Em Java, literais inteiros iniciados com `0` são interpretados em base octal ($036_8 = 3 \times 8^1 + 6 = 30_{10}$). O código numérico ISO 4217 do AUD é `036` (decimal 36), mas na classe avalia para `30`. | `MoedaISO4217.java`<br>Declaração da constante: `AUD`<br>Instrução: `AUD("AUD", 036, 2, ...)` |
+| **10. Anomalia Funcional (Serialização Dupla)** | **JSON duplamente serializado / escapado em `getAllCurrencies`.**<br>O método converte a lista para JSON através de `json = gson.toJson(moedas)` e em seguida retorna `gson.toJson(json)`. Isso gera uma string JSON com escape de aspas (`"\"[{\\\"codigoAlfabetico\\\":...}]\""`), forçando os clientes HTTP a fazerem `JSON.parse` duas vezes. | `CurrencyServices.java`<br>Método: `getAllCurrencies`<br>Instrução: `return gson.toJson(json);` |
+| **11. Anomalia de Codificação e Ortografia** | **Mensagem de erro com caracteres corrompidos e erro ortográfico.**<br>A mensagem de erro no construtor de `TaxaConversao` contém encoding corrompido (`"Moedas de base e convesao nï¿½o podem ser as mesmas"`), além de erro ortográfico na palavra *"conversão"* grafada como *"convesao"*. Além disso, o atributo da classe chama-se `conver`. | `TaxaConversao.java`<br>Construtor: `TaxaConversao`<br>Instrução: `throw new IllegalArgumentException(...)` |
+| **12. Deficiência de Nomenclatura** | **Erro ortográfico no nome da classe do mock (`DataAcessMock`).**<br>O nome da classe está sem uma letra 'c' (`DataAcessMock` ao invés de `DataAccessMock`). | `DataAcessMock.java`<br>Declaração: `class DataAcessMock` |
+| **13. Sugestão Arquitetural** | **Uso de tipos legados (`Calendar`) e imprecisão monetária com ponto flutuante (`double`).**<br>Recomenda-se substituir a classe legada e mutável `Calendar` pela moderna API `java.time.LocalDate` (Java 8+). Além disso, cálculos cambiais devem utilizar `BigDecimal` para evitar perda de precisão binária inerente ao tipo primitivo `double` (IEEE 754). | `CurrencyServices.java` e `TaxaConversao.java`<br>Método: `converter` |
+| **14. Deficiência de Design / Violação DRY** | **Duplicação de busca de moeda entre `CurrencyServices` e `MoedaISO4217`.**<br>A enum `MoedaISO4217` já possui o método estático `obterPorCodigo(String codigo)` que busca a moeda e lança `IllegalArgumentException` quando inválida. O serviço `CurrencyServices` reescreveu o loop de busca em `getCurrency()` e `isValidCurrency()`, retornando `null` em vez de reutilizar a lógica centralizada do enum. | `CurrencyServices.java`<br>Métodos: `getCurrency` e `isValidCurrency` |

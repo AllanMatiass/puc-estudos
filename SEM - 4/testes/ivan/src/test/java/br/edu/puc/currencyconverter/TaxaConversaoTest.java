@@ -82,4 +82,42 @@ public class TaxaConversaoTest {
         // Assert
         assertEquals(0.0, resultado, 0.0001);
     }
+
+    @Test
+    @DisplayName("Valor Limite Exploratório: Taxa muito alta (1.000.000)")
+    public void deveCalcularComTaxaMuitoAlta() {
+        // Arrange
+        TaxaConversao taxa = new TaxaConversao(MoedaISO4217.BRL, MoedaISO4217.USD);
+        taxa.setTaxaConversao(1_000_000.0);
+        double quantia = 100.0;
+
+        // Act & Assert
+        assertEquals(100_000_000.0, taxa.converter(quantia), 0.0001);
+    }
+
+    @Test
+    @DisplayName("Valor Limite Exploratório: Taxa extremamente baixa (1e-12)")
+    public void deveCalcularComTaxaExtremamenteBaixa() {
+        // Arrange
+        TaxaConversao taxa = new TaxaConversao(MoedaISO4217.BRL, MoedaISO4217.USD);
+        taxa.setTaxaConversao(1e-12);
+        double quantia = 100.0;
+
+        // Act & Assert
+        assertEquals(1e-10, taxa.converter(quantia), 1e-15);
+    }
+
+    @Test
+    @DisplayName("Anomalia de Robustez / Transbordo: Multiplicação com Double.MAX_VALUE resulta em Infinity sem proteção")
+    public void deveDemonstrarTransbordoComDoubleMaxValue() {
+        // Arrange
+        TaxaConversao taxa = new TaxaConversao(MoedaISO4217.USD, MoedaISO4217.BRL);
+        taxa.setTaxaConversao(5.11);
+
+        // Act
+        double resultado = taxa.converter(Double.MAX_VALUE);
+
+        // Assert
+        assertTrue(Double.isInfinite(resultado), "Cálculo excede limite do ponto flutuante e retorna Infinity");
+    }
 }
