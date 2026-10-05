@@ -1,3 +1,5 @@
+package org.example;
+
 public class Main
 {
 	public static void main (String[] args)
@@ -26,6 +28,12 @@ public class Main
 
 			System.out.println(arv1.equals(arv2)); // true
 			System.out.println(arv1.equals(arv3)); // false
+
+			arv3.removaUmItem(40);
+
+
+			System.out.println("=== DEPOIS DA REMOÇÃO ===");
+			System.out.println(arv3);
 		}
 		catch (Exception erro)
 		{

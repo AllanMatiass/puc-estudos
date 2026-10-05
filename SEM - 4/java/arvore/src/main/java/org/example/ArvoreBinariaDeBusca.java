@@ -1,4 +1,8 @@
+package org.example;
+
 import java.lang.reflect.*;
+import java.util.Map;
+import java.util.Optional;
 
 public class ArvoreBinariaDeBusca <X extends Comparable<X>>
 {
@@ -25,16 +29,19 @@ public class ArvoreBinariaDeBusca <X extends Comparable<X>>
         public No getEsq ()
         {
             return this.esq;
+
         }
 
         public X getInfo ()
         {
             return this.info;
+
         }
 
         public No getDir ()
         {
             return this.dir;
+
         }
 
         public void setEsq (No e)
@@ -53,7 +60,7 @@ public class ArvoreBinariaDeBusca <X extends Comparable<X>>
         }
     } //fim da classe No
 
-    private Clonador<X> clonador = new Clonador<X> ();
+    private Clonador<X> clonador = new Clonador<X>();
     private No raiz;
 
     public void guardeUmItem (X i) throws Exception
@@ -129,11 +136,75 @@ public class ArvoreBinariaDeBusca <X extends Comparable<X>>
     {
         return getQtdDeNodos (this.raiz);
     }
-    /*
+
+    public Map<String, Optional<No>> getNo(X i) throws Exception {
+        if (!temOItem(i)) throw new Exception("é null");
+
+        No raiz = this.raiz;
+        No pai = null;
+
+        while(i.compareTo(raiz.getInfo()) != 0){
+            pai = raiz;
+            if (i.compareTo(raiz.getInfo()) < 0){
+                raiz = raiz.getEsq();
+                continue;
+            }
+
+            raiz = raiz.getDir();
+        }
+
+        return Map.of(
+                "element", Optional.of(raiz),
+                "parent", Optional.ofNullable(pai)
+        );
+    }
+
     public void removaUmItem (X i) throws Exception
     {
-        // faça
+
+        Map<String, Optional<No>> elements = this.getNo(i);
+        Optional<No> oPai = elements.get("parent");
+        No pai = null;
+        if (oPai.isPresent()) pai = oPai.get();
+
+        Optional<No> oRaiz = elements.get("element");
+        No raiz = null;
+        if (oRaiz.isPresent()) raiz = oRaiz.get();
+
+
+
+        // C1 - Era folha
+        if (raiz.getEsq() == null && raiz.getDir() == null) {
+
+            if (pai == null) {
+                // árvore tinha apenas a raiz
+                this.raiz = null;
+            } else if (pai.getEsq() == raiz) {
+                pai.setEsq(null);
+            } else {
+                pai.setDir(null);
+            }
+
+            return;
+        }
+
+        // C2 - Não era folha
+        if (raiz.getEsq() == null) {
+            // tem apenas filho direito
+            if (pai.getEsq() == raiz)
+                pai.setEsq(raiz.getDir());
+            else
+                pai.setDir(raiz.getDir());
+        }
+        else {
+            // tem apenas filho esquerdo
+            if (pai.getEsq() == raiz)
+                pai.setEsq(raiz.getEsq());
+            else
+                pai.setDir(raiz.getEsq());
+        }
     }
+    /*
     
     private int getAltura (No r)
     {
