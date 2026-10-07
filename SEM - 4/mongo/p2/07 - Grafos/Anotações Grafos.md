@@ -11,7 +11,3 @@ Os bancos orientados a grafos só foram existir depois de bancos relacionais por
 - Neo4J significava "for java", em 2003/2004 conectado nativamente no java;
 - Foi uma join venture da bosch;
 - Usa uma linguagem de consulta chamada Cypher (busca em grafo - parecida com SQL);
-
-# Quando usar um banco orientado a grafos
-
-
