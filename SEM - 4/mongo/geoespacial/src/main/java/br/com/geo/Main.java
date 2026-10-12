@@ -45,11 +45,11 @@ public class Main {
         }
     }
 
-    private static boolean pegarPontosProximos(MongoService service, Scanner scanner) {
+    private static void pegarPontosProximos(MongoService service, Scanner scanner) {
         Ponto ponto = getPonto(service, scanner);
         if (ponto == null) {
             System.out.println("Ponto não encontrado.");
-            return true;
+            return;
         }
 
 
@@ -78,7 +78,7 @@ public class Main {
                     calcularHaversineKm(new Coordenadas(ponto), new Coordenadas(p))
             );
         }
-        return false;
+        return;
     }
 
     private static void cadastrarPonto(MongoService service, Scanner scanner) {
