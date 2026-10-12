@@ -9,6 +9,8 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -68,6 +70,8 @@ public class MongoService implements AutoCloseable {
 
         return seq;
     }
+
+
 
     public Ponto cadastrarPonto(String nome, double latitude, double longitude) {
         int id = proximoId();
@@ -135,5 +139,46 @@ public class MongoService implements AutoCloseable {
         double lon = lonNum != null ? lonNum : 0.0;
 
         return new Coordenadas(lat, lon);
+    }
+
+    public List<Ponto> buscarPontosProximos(
+            Coordenadas coordenadas,
+            double raioMetros
+    ) {
+        double longitude = coordenadas.lon();
+        double latitude = coordenadas.lat();
+
+
+        Point origem = new Point(
+                new Position(longitude, latitude)
+        );
+
+        List<Ponto> pontos = new ArrayList<>();
+
+        for (Document doc : this.pontosCollection.find(
+                Filters.nearSphere(
+                        "localizacao",
+                        origem,
+                        raioMetros,
+                        null
+                )
+        )) {
+            Integer id = doc.getInteger("id");
+            if (id == null) {
+                continue;
+            }
+
+            String nome = doc.getString("nome");
+            Coordenadas coordenadasRet = getCoordenadas(doc);
+
+            pontos.add(new Ponto(
+                    id,
+                    nome != null ? nome : "",
+                    coordenadasRet.lat(),
+                    coordenadasRet.lon()
+            ));
+        }
+
+        return pontos;
     }
 }

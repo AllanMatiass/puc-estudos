@@ -19,6 +19,7 @@ public class Main {
                 System.out.println("1. Cadastrar novo ponto");
                 System.out.println("2. Listar pontos cadastrados");
                 System.out.println("3. Calcular distância entre 2 pontos");
+                System.out.println("4. Pegar pontos próximos");
                 System.out.println("0. Sair");
                 System.out.print("Escolha uma opção: ");
 
@@ -28,6 +29,8 @@ public class Main {
                     case "1" -> cadastrarPonto(service, scanner);
                     case "2" -> listarPontos(service);
                     case "3" -> calcularDistancia(service, scanner);
+                    case "4" -> pegarPontosProximos(service, scanner);
+
                     case "0" -> {
                         System.out.println("Encerrando o programa... Até logo!");
                         running = false;
@@ -40,6 +43,42 @@ public class Main {
             System.err.println("Erro ao conectar ou executar no MongoDB: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private static boolean pegarPontosProximos(MongoService service, Scanner scanner) {
+        Ponto ponto = getPonto(service, scanner);
+        if (ponto == null) {
+            System.out.println("Ponto não encontrado.");
+            return true;
+        }
+
+
+        boolean error;
+        int km = 5000;
+
+        do{
+            error = false;
+            try{
+                System.out.println("Digite a quantidade de quilometros: ");
+                km = readInt(scanner) * 1000;
+            } catch (Exception e){
+                error = true;
+            }
+        } while(error);
+
+        List<Ponto> pontos = buscarProximos(service, new Coordenadas(ponto), km);
+
+        if (pontos.isEmpty()) System.out.println("Não há pontos próximos");
+
+        System.out.println("LAT | LON | DISTÂNCIA");
+        for(Ponto p : pontos){
+            if (p.getId() == ponto.getId()) continue;
+            System.out.printf("Ponto %s: %.2f | %.2f | %.2f\n",
+                    p.getNome(), p.getLatitude(), p.getLongitude(),
+                    calcularHaversineKm(new Coordenadas(ponto), new Coordenadas(p))
+            );
+        }
+        return false;
     }
 
     private static void cadastrarPonto(MongoService service, Scanner scanner) {
@@ -64,6 +103,11 @@ public class Main {
                 ponto.getId(), ponto.getNome(), ponto.getLatitude(), ponto.getLongitude());
     }
 
+
+    private static List<Ponto> buscarProximos(MongoService service, Coordenadas coordenadas, int metros){
+        return service.buscarPontosProximos(coordenadas, metros);
+    }
+
     private static void listarPontos(MongoService service) {
         System.out.println("\n--- PONTOS CADASTRADOS ---");
         List<Ponto> pontos = service.listarTodos();
@@ -80,6 +124,21 @@ public class Main {
                     p.getId(), p.getNome(), p.getLatitude(), p.getLongitude());
         }
         System.out.println("Total de pontos: " + pontos.size());
+    }
+
+    private static Ponto getPonto(MongoService mongoService, Scanner scanner){
+
+        System.out.print("Digite o ID do ponto: ");
+        Integer id1 = readInt(scanner);
+        if (id1 == null) return null;
+
+        Ponto ponto1 = mongoService.findById(id1);
+        if (ponto1 == null) {
+            System.out.printf("Erro: Ponto com ID %d NÃO está cadastrado no banco de dados!%n", id1);
+            return null;
+        }
+
+        return ponto1;
     }
 
     private static void calcularDistancia(MongoService mongoService, Scanner scanner) {
