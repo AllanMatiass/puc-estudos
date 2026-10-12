@@ -12,6 +12,14 @@ public class Ponto {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+    public Ponto(int id, String nome, Coordenadas coordenadas) {
+        this(
+                id,
+                nome,
+                coordenadas.lat(),
+                coordenadas.lon()
+        );
+    }
 
     public int getId() {
         return id;

@@ -169,13 +169,12 @@ public class MongoService implements AutoCloseable {
             }
 
             String nome = doc.getString("nome");
-            Coordenadas coordenadasRet = getCoordenadas(doc);
+            Coordenadas coordenadasItem = getCoordenadas(doc);
 
             pontos.add(new Ponto(
                     id,
                     nome != null ? nome : "",
-                    coordenadasRet.lat(),
-                    coordenadasRet.lon()
+                    coordenadas
             ));
         }
 
