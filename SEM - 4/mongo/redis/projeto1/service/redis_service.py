@@ -18,6 +18,7 @@ def cache_fill():
 
         r.set(key, dumps(s))
 
+    mongo.close()
 def search_student(key: str):
     student = r.get(f'student:{key}')
 
