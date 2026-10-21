@@ -1,18 +1,9 @@
 from redis import Redis
+from mongo_service import getMongoContext
+from json import dumps, loads
 
 r = Redis(host='localhost', port=6379, decode_responses=True)
 
-r.set('bike:id:1', f'{{"testechave": "cu"}}')
-
-print(r.get('bike:id:1'))
-
-print(r.get('aprovado:1'))
-
-# Guardar em cache alguns estudantes aleatorios
-# testar no redis com vários tipos de dados (string, float, byte, int)
-
-# parte 2
-# considere o cenário:
 '''
 
 # parte 1
@@ -29,7 +20,10 @@ crie um banco de dados mongodb chamado vestibular e uma coleção aprovados. nes
     finalCPF: string,
     cursos: string[],
     classificacaoGeral: int,
-    classificacoesesCursos: 
+    classificacoesesCursos: [{
+        curso: 'a',
+        classificacao: 4,
+    }]
 }
 
 distribua esses estudantes em apenas 3 cursos
@@ -46,3 +40,33 @@ se vc se animar, transforme este pequeno programa em python em um backend de ver
 para testar esse backend, não precisa de um frontend. Use o postman
 
 '''
+
+
+
+mongo, db, collection = getMongoContext()
+def cache_fill():
+    students = collection.find({})
+    for s in students:
+        s.pop('_id', None)
+
+        sid = s['finalCPF']
+        name = s['nomeCompleto'].replace(' ', '').lower()
+        key = f'student:{name}:{sid}'
+
+        r.set(key, dumps(s))
+
+def search_student(key: str):
+    student = r.get(f'student:{key}')
+
+    return loads(student) if student != None else None
+
+if (__name__ == '__main__'):
+    cache_fill()
+
+    res = search_student('camilarodrigueslima:345')
+
+    if (res):
+        print(res)
+    else:
+        print('encontrou nao')
+
