@@ -21,7 +21,7 @@ def cache_fill():
 def search_student(key: str):
     student = r.get(f'student:{key}')
 
-    return student if student != None else None
+    return student
 
 if (__name__ == '__main__'):
     cache_fill()
