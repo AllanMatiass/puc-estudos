@@ -72,7 +72,6 @@ public class MongoService implements AutoCloseable {
     }
 
 
-
     public Ponto cadastrarPonto(String nome, double latitude, double longitude) {
         int id = proximoId();
 
@@ -174,7 +173,7 @@ public class MongoService implements AutoCloseable {
             pontos.add(new Ponto(
                     id,
                     nome != null ? nome : "",
-                    coordenadas
+                    coordenadasItem
             ));
         }
 

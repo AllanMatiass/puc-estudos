@@ -73,6 +73,7 @@ public class Main {
         System.out.println("LAT | LON | DISTÂNCIA");
         for(Ponto p : pontos){
             if (p.getId() == ponto.getId()) continue;
+
             System.out.printf("Ponto %s: %.2f | %.2f | %.2f\n",
                     p.getNome(), p.getLatitude(), p.getLongitude(),
                     calcularHaversineKm(new Coordenadas(ponto), new Coordenadas(p))
