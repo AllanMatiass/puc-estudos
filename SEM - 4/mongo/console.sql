@@ -82,6 +82,17 @@ begin
     END LOOP;
 END;
 
-
+-- 
+-- AGRUPAR POR BRAND USANDO OPEN FETCH CLOSE
+declare
+    CURSOR cu IS SELECT * FROM CONSOLES GROUP BY BRAND;
+    v_counter POSITIVEN := 1;
+begin
+    for r IN cu
+    loop
+        DBMS_OUTPUT.PUT_LINE(v_counter || ' | ' || r.NAME || ' | ' || r.NOME);
+        v_counter := v_counter + 1;
+    END LOOP;
+END;
 
 /
